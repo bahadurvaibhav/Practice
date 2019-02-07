@@ -1,5 +1,7 @@
 package vaibhav.bahadur.practice.domain;
 
+import android.arch.persistence.room.TypeConverter;
+
 public enum PracticeType {
     GRATITUDE("Gratitude"), JOKES("Jokes");
 
@@ -33,5 +35,15 @@ public enum PracticeType {
             displayNames[i] = values[i].getDisplayName();
         }
         return displayNames;
+    }
+
+    @TypeConverter
+    public static PracticeType toType(String type) {
+        return PracticeType.valueOf(type);
+    }
+
+    @TypeConverter
+    public static String toString(PracticeType type) {
+        return type.name();
     }
 }

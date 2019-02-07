@@ -8,21 +8,38 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.MenuItem;
 
+import vaibhav.bahadur.practice.database.AppDatabase;
+import vaibhav.bahadur.practice.domain.PracticeType;
+import vaibhav.bahadur.practice.domain.question.Question;
+import vaibhav.bahadur.practice.domain.question.QuestionDao;
+import vaibhav.bahadur.practice.domain.question.QuestionType;
 import vaibhav.bahadur.practice.util.Util;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     final Context context = this;
+    private AppDatabase database;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupDatabase();
         setupNavigationView();
+    }
+
+    private void setupDatabase() {
+        database = AppDatabase.getDatabase(getApplicationContext());
+        QuestionDao questionDao = database.questionDao();
+        boolean isEmpty = questionDao.getAll().size() == 0;
+        if (isEmpty) {
+            questionDao.add(new Question("Write a joke", QuestionType.TEXT, PracticeType.JOKES));
+            questionDao.add(new Question("Write something new you are grateful for in the last 24 hours", QuestionType.TEXT, PracticeType.GRATITUDE));
+            questionDao.add(new Question("Why is it important?", QuestionType.TEXT, PracticeType.GRATITUDE));
+        }
     }
 
     private void setupNavigationView() {
@@ -61,7 +78,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private int convertToPixels(int dp) {
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics()));
+    @Override
+    protected void onDestroy() {
+        AppDatabase.destroyInstance();
+        super.onDestroy();
     }
 }

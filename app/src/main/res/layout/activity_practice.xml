@@ -2,20 +2,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="32dp"
-        android:text="Write a Joke"
-        tools:context=".MainActivity" />
+    <LinearLayout
+        android:id="@+id/questionnaire"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--<TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="32dp"
+            android:text="Write a Joke"
+            tools:context=".MainActivity" />
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView1"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="69dp"
+            android:ems="10"
+            android:hint="Enter text ..."
+            android:inputType="textPersonName" />-->
+    </LinearLayout>
 
     <Button
         android:id="@+id/submitButton"
@@ -27,19 +46,7 @@
         android:layout_marginEnd="52dp"
         android:layout_marginRight="52dp"
         android:layout_marginBottom="54dp"
-        android:text="Submit"
-        android:onClick="submit"/>
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView1"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="69dp"
-        android:ems="10"
-        android:hint="Enter text ..."
-        android:inputType="textPersonName" />
+        android:onClick="submit"
+        android:text="Submit" />
 
 </RelativeLayout>
