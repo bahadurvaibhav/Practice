@@ -3,7 +3,7 @@ package bahadur.vaibhav.practice.domain;
 import androidx.room.TypeConverter;
 
 public enum QuestionType {
-    TEXT, RATING;
+    ANSWER_TEXT, RATING, TEXT, EXPANDABLE_ANSWER_TEXT;
 
     @TypeConverter
     public static QuestionType toType(String type) {

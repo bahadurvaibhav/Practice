@@ -4,9 +4,11 @@ import androidx.room.TypeConverter;
 
 import static bahadur.vaibhav.practice.util.Constants.SKILL_TYPE_GRATITUDE;
 import static bahadur.vaibhav.practice.util.Constants.SKILL_TYPE_JOKE;
+import static bahadur.vaibhav.practice.util.Constants.SKILL_TYPE_STORY_DHV;
+import static bahadur.vaibhav.practice.util.Constants.SKILL_TYPE_STORY_OBJECT;
 
 public enum PracticeType {
-    GRATITUDE(SKILL_TYPE_GRATITUDE), JOKE(SKILL_TYPE_JOKE);
+    GRATITUDE(SKILL_TYPE_GRATITUDE), JOKE(SKILL_TYPE_JOKE), STORY_OBJECT(SKILL_TYPE_STORY_OBJECT), STORY_DHV(SKILL_TYPE_STORY_DHV);
 
     private String displayName;
 

@@ -74,11 +74,22 @@ public class MainActivity extends AppCompatActivity {
         int size = questionDao.getAll().size();
         Log.i(LOG_INFORMATION, "Database questions size: " + size);
         if (size == 0) {
-            questionDao.add(new Question("Write a joke", QuestionType.TEXT, PracticeType.JOKE, 1));
-            questionDao.add(new Question("Why is this funny?", QuestionType.TEXT, PracticeType.JOKE, 2));
+            questionDao.add(new Question("Write a joke", QuestionType.EXPANDABLE_ANSWER_TEXT, PracticeType.JOKE, 1));
+            questionDao.add(new Question("Rate this", QuestionType.RATING, PracticeType.JOKE, 3));
+            questionDao.add(new Question("Why is this funny?", QuestionType.EXPANDABLE_ANSWER_TEXT, PracticeType.JOKE, 2));
 
-            questionDao.add(new Question("Write something new you are grateful for in the last 24 hours", QuestionType.TEXT, PracticeType.GRATITUDE, 2));
-            questionDao.add(new Question("Why is it important?", QuestionType.TEXT, PracticeType.GRATITUDE, 3));
+            questionDao.add(new Question("Write something new you are grateful for in the last 24 hours", QuestionType.EXPANDABLE_ANSWER_TEXT, PracticeType.GRATITUDE, 1));
+            questionDao.add(new Question("Why is it important?", QuestionType.EXPANDABLE_ANSWER_TEXT, PracticeType.GRATITUDE, 2));
+
+            questionDao.add(new Question("Pick any random object, thing, person from the surrounding", QuestionType.ANSWER_TEXT, PracticeType.STORY_OBJECT, 1));
+            questionDao.add(new Question("Write a story based on above selection", QuestionType.EXPANDABLE_ANSWER_TEXT, PracticeType.STORY_OBJECT, 2));
+            questionDao.add(new Question("Rate this", QuestionType.RATING, PracticeType.STORY_OBJECT, 3));
+            questionDao.add(new Question("Critique / Feedback / Improvements", QuestionType.EXPANDABLE_ANSWER_TEXT, PracticeType.STORY_OBJECT, 4));
+
+            questionDao.add(new Question("DHV Spikes: \n 1. Being a leader of men \n 2. Being the protector of loved ones \n 3. Being pre-selected by other women \n 4. Having a willingness to emote \n 5. Being a successful risk taker \n 6. Willingness to walk away", QuestionType.TEXT, PracticeType.STORY_DHV, 1));
+            questionDao.add(new Question("Write a story demonstrating high value", QuestionType.EXPANDABLE_ANSWER_TEXT, PracticeType.STORY_DHV, 2));
+            questionDao.add(new Question("Rate this", QuestionType.RATING, PracticeType.STORY_DHV, 3));
+            questionDao.add(new Question("Critique / Feedback / Improvements", QuestionType.EXPANDABLE_ANSWER_TEXT, PracticeType.STORY_DHV, 4));
         }
     }
 

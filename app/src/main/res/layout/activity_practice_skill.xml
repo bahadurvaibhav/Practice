@@ -32,9 +32,10 @@
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/questionnaire"
@@ -49,11 +50,10 @@
                     android:layout_marginBottom="@dimen/dimen_50dp"
                     android:layout_marginLeft="@dimen/dimen_25dp"
                     android:layout_marginRight="@dimen/dimen_25dp"
-                    android:layout_alignParentBottom="true"
                     android:onClick="@{activity::submit}"
                     android:text="@string/submit" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
