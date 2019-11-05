@@ -22,10 +22,14 @@ public class Question {
     @ColumnInfo(name = "practice_type")
     private PracticeType practiceType;
 
-    public Question(String description, QuestionType questionType, PracticeType practiceType) {
+    @ColumnInfo(name = "order")
+    private int order;
+
+    public Question(String description, QuestionType questionType, PracticeType practiceType, int order) {
         this.description = description;
         this.questionType = questionType;
         this.practiceType = practiceType;
+        this.order = order;
     }
 
     public int getId() {
@@ -58,5 +62,13 @@ public class Question {
 
     public void setPracticeType(PracticeType practiceType) {
         this.practiceType = practiceType;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

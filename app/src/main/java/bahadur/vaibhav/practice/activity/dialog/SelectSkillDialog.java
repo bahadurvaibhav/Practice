@@ -73,6 +73,7 @@ public class SelectSkillDialog extends DialogFragment {
                 Intent intent = new Intent(getParentActivity(), PracticeSkillActivity.class);
                 intent.putExtra(INTENT_EXTRA_SKILL, selectedSkill);
                 startActivity(intent);
+                dismiss();
                 break;
             case R.id.close:
                 dismiss();

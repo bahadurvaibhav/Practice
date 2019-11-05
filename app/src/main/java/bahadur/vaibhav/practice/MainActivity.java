@@ -58,12 +58,14 @@ public class MainActivity extends AppCompatActivity {
     private void setupDatabase() {
         database = AppDatabase.getDatabase(getApplicationContext());
         QuestionDao questionDao = database.questionDao();
-        boolean isEmpty = questionDao.getAll().size() == 0;
-        Log.i(LOG_INFORMATION, "Database questions isEmpty: " + isEmpty);
-        if (isEmpty) {
-            questionDao.add(new Question("Write a joke", QuestionType.TEXT, PracticeType.JOKE));
-            questionDao.add(new Question("Write something new you are grateful for in the last 24 hours", QuestionType.TEXT, PracticeType.GRATITUDE));
-            questionDao.add(new Question("Why is it important?", QuestionType.TEXT, PracticeType.GRATITUDE));
+        int size = questionDao.getAll().size();
+        Log.i(LOG_INFORMATION, "Database questions size: " + size);
+        if (size == 0) {
+            questionDao.add(new Question("Write a joke", QuestionType.TEXT, PracticeType.JOKE, 1));
+            questionDao.add(new Question("Why is this funny?", QuestionType.TEXT, PracticeType.JOKE, 2));
+
+            questionDao.add(new Question("Write something new you are grateful for in the last 24 hours", QuestionType.TEXT, PracticeType.GRATITUDE, 2));
+            questionDao.add(new Question("Why is it important?", QuestionType.TEXT, PracticeType.GRATITUDE, 3));
         }
     }
 

@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil;
 import bahadur.vaibhav.practice.R;
 import bahadur.vaibhav.practice.database.AppDatabase;
 import bahadur.vaibhav.practice.databinding.ActivityPracticeSkillBinding;
+import bahadur.vaibhav.practice.domain.Form;
 import bahadur.vaibhav.practice.domain.PracticeType;
 import bahadur.vaibhav.practice.domain.Question;
 import bahadur.vaibhav.practice.domain.QuestionAnswer;
@@ -93,12 +94,18 @@ public class PracticeSkillActivity extends BaseActivity {
     }
 
     public void submit(View view) {
-        for (int i = 0; i < answerViews.size(); i++) {
+        long insertId = this.database.formDao().add(new Form());
+        int insertIdInt = (int) insertId;
+        int size = answerViews.size();
+        for (int i = 0; i < size; i++) {
             EditText answerView = answerViews.get(i);
             int index = answerView.getId();
-            QuestionAnswer questionAnswer = new QuestionAnswer(this.question.get(index).getId(), answerView.getText().toString());
+            String answerText = answerView.getText().toString();
+            Log.i(LOG_INFORMATION, "Question " + i + " with answer value: " + answerText);
+            QuestionAnswer questionAnswer = new QuestionAnswer(insertIdInt, this.question.get(index).getId(), answerText);
             this.database.questionAnswerDao().add(questionAnswer);
         }
-        Log.i(LOG_INFORMATION, "Submitted successfully");
+        Log.i(LOG_INFORMATION, "Form submitted successfully with id: " + insertIdInt);
+        finish();
     }
 }
