@@ -10,8 +10,8 @@
     android:orientation="vertical">
 
     <ListView
-        android:id="@+id/practice_history"
+        android:id="@+id/history_list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="fill_parent" />
 
 </LinearLayout>

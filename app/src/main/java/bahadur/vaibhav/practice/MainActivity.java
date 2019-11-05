@@ -5,13 +5,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import bahadur.vaibhav.practice.activity.adapter.HistoryItem;
+import bahadur.vaibhav.practice.activity.adapter.ListViewAdapter;
 import bahadur.vaibhav.practice.activity.dialog.SelectSkillDialog;
 import bahadur.vaibhav.practice.database.AppDatabase;
+import bahadur.vaibhav.practice.domain.Form;
 import bahadur.vaibhav.practice.domain.PracticeType;
 import bahadur.vaibhav.practice.domain.Question;
 import bahadur.vaibhav.practice.domain.QuestionDao;
@@ -22,14 +28,15 @@ import static bahadur.vaibhav.practice.util.Constants.LOG_INFORMATION;
 public class MainActivity extends AppCompatActivity {
 
     private AppDatabase database;
+    ListViewAdapter listViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupDatabase();
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setupToolbar();
+        setupHistoryView();
         setupStartSessionButton();
     }
 
@@ -53,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshHistoryView();
     }
 
     private void setupDatabase() {
@@ -79,5 +92,29 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show(getSupportFragmentManager(), "SelectSkillDialog");
             }
         });
+    }
+
+    private void setupHistoryView() {
+        // Setup the list view
+        final ListView newsEntryListView = (ListView) findViewById(R.id.history_list);
+        listViewAdapter = new ListViewAdapter(this, R.layout.history_item);
+        newsEntryListView.setAdapter(listViewAdapter);
+        refreshHistoryView();
+    }
+
+    private void refreshHistoryView() {
+        listViewAdapter.clear();
+        // Populate the list, through the adapter
+        List<Form> forms = database.formDao().getAll();
+        Log.i(LOG_INFORMATION, "No. of forms filled: " + forms.size());
+        for (Form form : forms) {
+            HistoryItem entry = new HistoryItem(form.getPracticeType(), form.getCreatedDate());
+            listViewAdapter.add(entry);
+        }
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 }

@@ -94,7 +94,7 @@ public class PracticeSkillActivity extends BaseActivity {
     }
 
     public void submit(View view) {
-        long insertId = this.database.formDao().add(new Form());
+        long insertId = this.database.formDao().add(new Form(this.practiceType));
         int insertIdInt = (int) insertId;
         int size = answerViews.size();
         for (int i = 0; i < size; i++) {
