@@ -1,6 +1,7 @@
 package bahadur.vaibhav.practice;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,13 +11,23 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import bahadur.vaibhav.practice.activity.dialog.SelectSkillDialog;
+import bahadur.vaibhav.practice.database.AppDatabase;
+import bahadur.vaibhav.practice.domain.PracticeType;
+import bahadur.vaibhav.practice.domain.Question;
+import bahadur.vaibhav.practice.domain.QuestionDao;
+import bahadur.vaibhav.practice.domain.QuestionType;
+
+import static bahadur.vaibhav.practice.util.Constants.LOG_INFORMATION;
 
 public class MainActivity extends AppCompatActivity {
+
+    private AppDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupDatabase();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setupStartSessionButton();
@@ -42,6 +53,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupDatabase() {
+        database = AppDatabase.getDatabase(getApplicationContext());
+        QuestionDao questionDao = database.questionDao();
+        boolean isEmpty = questionDao.getAll().size() == 0;
+        Log.i(LOG_INFORMATION, "Database questions isEmpty: " + isEmpty);
+        if (isEmpty) {
+            questionDao.add(new Question("Write a joke", QuestionType.TEXT, PracticeType.JOKE));
+            questionDao.add(new Question("Write something new you are grateful for in the last 24 hours", QuestionType.TEXT, PracticeType.GRATITUDE));
+            questionDao.add(new Question("Why is it important?", QuestionType.TEXT, PracticeType.GRATITUDE));
+        }
     }
 
 

@@ -23,7 +23,7 @@
         <item name="android:background">@color/gray_line</item>
     </style>
 
-    <style name="SideButtonView">
+    <style name="BottomButtonView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:maxLines">1</item>

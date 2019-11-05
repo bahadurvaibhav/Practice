@@ -47,7 +47,7 @@
 
         <TextView
             android:id="@+id/start_button"
-            style="@style/SideButtonView"
+            style="@style/BottomButtonView"
             android:text="@string/start"
             android:layout_marginTop="@dimen/dimen_50dp"
             android:layout_marginLeft="@dimen/dimen_25dp"
