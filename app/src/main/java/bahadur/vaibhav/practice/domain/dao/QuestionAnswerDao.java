@@ -20,6 +20,9 @@ public interface QuestionAnswerDao {
     @Query("select * from question_answer where id = :questionAnswerId")
     List<QuestionAnswer> get(int questionAnswerId);
 
+    @Query("select * from question_answer where form_id = :formId")
+    List<QuestionAnswer> getForFormId(int formId);
+
     @Query("delete from question_answer")
     void removeAll();
 }

@@ -6,12 +6,22 @@ import bahadur.vaibhav.practice.domain.PracticeType;
 
 public class HistoryItem {
 
+    private int formId;
     private PracticeType practiceType;
     private Date currentDate;
 
-    public HistoryItem(PracticeType practiceType, Date currentDate) {
+    public HistoryItem(int formId, PracticeType practiceType, Date currentDate) {
+        this.formId = formId;
         this.practiceType = practiceType;
         this.currentDate = currentDate;
+    }
+
+    public int getFormId() {
+        return formId;
+    }
+
+    public void setFormId(int formId) {
+        this.formId = formId;
     }
 
     public PracticeType getPracticeType() {

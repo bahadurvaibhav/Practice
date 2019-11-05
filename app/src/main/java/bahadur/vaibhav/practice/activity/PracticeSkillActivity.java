@@ -1,7 +1,6 @@
 package bahadur.vaibhav.practice.activity;
 
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -10,7 +9,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -23,6 +24,7 @@ import bahadur.vaibhav.practice.domain.Question;
 import bahadur.vaibhav.practice.domain.QuestionAnswer;
 import bahadur.vaibhav.practice.domain.QuestionType;
 
+import static bahadur.vaibhav.practice.util.Constants.INTENT_EXTRA_FORM_ID;
 import static bahadur.vaibhav.practice.util.Constants.INTENT_EXTRA_SKILL;
 import static bahadur.vaibhav.practice.util.Constants.LOG_INFORMATION;
 import static bahadur.vaibhav.practice.util.Utility.convertToPixels;
@@ -36,6 +38,8 @@ public class PracticeSkillActivity extends BaseActivity {
     private List<EditText> editTextViews = new ArrayList<>();
     private List<RatingBar> ratingBarViews = new ArrayList<>();
     private int lastIndex = 0;
+    private int formId;
+    Map<Integer, QuestionAnswer> questionIdToQuestionAnswerMap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +53,14 @@ public class PracticeSkillActivity extends BaseActivity {
 
     private void setupQuestionnaire() {
         if (getIntent() != null) {
+            if (getIntent().hasExtra(INTENT_EXTRA_FORM_ID)) {
+                formId = getIntent().getIntExtra(INTENT_EXTRA_FORM_ID, 0);
+                List<QuestionAnswer> questionAnswers = database.questionAnswerDao().getForFormId(formId);
+                for (QuestionAnswer questionAnswer : questionAnswers) {
+                    questionIdToQuestionAnswerMap.put(questionAnswer.getQuestionId(), questionAnswer);
+                }
+                binding.submitButton.setText(getResources().getString(R.string.update));
+            }
             if (getIntent().hasExtra(INTENT_EXTRA_SKILL)) {
                 initQuestions();
                 boolean questionsExist = this.question != null && this.question.size() > 0;
@@ -56,7 +68,7 @@ public class PracticeSkillActivity extends BaseActivity {
                 if (questionsExist) {
                     for (int i = 0; i < this.question.size(); i++) {
                         Question question = this.question.get(i);
-                        populateQuestion(question, i);
+                        populateQuestion(question, question.getId());
                     }
                 }
             }
@@ -66,6 +78,7 @@ public class PracticeSkillActivity extends BaseActivity {
     private void initQuestions() {
         String skill = getIntent().getStringExtra(INTENT_EXTRA_SKILL);
         Log.i(LOG_INFORMATION, "Practice Type: " + skill);
+        binding.mToolbar.title.setText(skill);
         this.practiceType = PracticeType.toTypeFromDisplayName(skill);
         this.question = database.questionDao().get(this.practiceType.name());
     }
@@ -106,6 +119,12 @@ public class PracticeSkillActivity extends BaseActivity {
         editText.setLayoutParams(editTextLayoutParams);
         editText.setEms(15);
         editText.setId(index);
+        QuestionAnswer questionAnswer = questionIdToQuestionAnswerMap.get(index);
+        if (questionAnswer != null) {
+            String answerText = questionAnswer.getAnswerText();
+            Log.i(LOG_INFORMATION, "Answer to question " + index + " is: " + answerText);
+            editText.setText(answerText, TextView.BufferType.EDITABLE);
+        }
         return editText;
     }
 
@@ -128,6 +147,12 @@ public class PracticeSkillActivity extends BaseActivity {
         editTextLayoutParams.setMargins(convertToPixels(20, getResources()), convertToPixels(10, getResources()), 0, 0);
         ratingBar.setLayoutParams(editTextLayoutParams);
         ratingBar.setId(index);
+        QuestionAnswer questionAnswer = questionIdToQuestionAnswerMap.get(index);
+        if (questionAnswer != null) {
+            String answerText = questionAnswer.getAnswerText();
+            Log.i(LOG_INFORMATION, "Answer to question " + index + " is: " + answerText);
+            ratingBar.setRating(Float.parseFloat(answerText));
+        }
         linearLayout.addView(ratingBar, lastIndex);
         ratingBarViews.add(ratingBar);
         lastIndex++;

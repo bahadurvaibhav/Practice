@@ -1,10 +1,12 @@
 package bahadur.vaibhav.practice;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -13,6 +15,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import bahadur.vaibhav.practice.activity.PracticeSkillActivity;
 import bahadur.vaibhav.practice.activity.adapter.HistoryItem;
 import bahadur.vaibhav.practice.activity.adapter.ListViewAdapter;
 import bahadur.vaibhav.practice.activity.dialog.SelectSkillDialog;
@@ -20,9 +23,11 @@ import bahadur.vaibhav.practice.database.AppDatabase;
 import bahadur.vaibhav.practice.domain.Form;
 import bahadur.vaibhav.practice.domain.PracticeType;
 import bahadur.vaibhav.practice.domain.Question;
-import bahadur.vaibhav.practice.domain.dao.QuestionDao;
 import bahadur.vaibhav.practice.domain.QuestionType;
+import bahadur.vaibhav.practice.domain.dao.QuestionDao;
 
+import static bahadur.vaibhav.practice.util.Constants.INTENT_EXTRA_FORM_ID;
+import static bahadur.vaibhav.practice.util.Constants.INTENT_EXTRA_SKILL;
 import static bahadur.vaibhav.practice.util.Constants.LOG_INFORMATION;
 
 public class MainActivity extends AppCompatActivity {
@@ -110,6 +115,17 @@ public class MainActivity extends AppCompatActivity {
         final ListView newsEntryListView = (ListView) findViewById(R.id.history_list);
         listViewAdapter = new ListViewAdapter(this, R.layout.history_item);
         newsEntryListView.setAdapter(listViewAdapter);
+        newsEntryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, PracticeSkillActivity.class);
+                HistoryItem item = listViewAdapter.getItem(position);
+                intent.putExtra(INTENT_EXTRA_FORM_ID, item.getFormId());
+                intent.putExtra(INTENT_EXTRA_SKILL, item.getPracticeType().getDisplayName());
+                Log.i(LOG_INFORMATION, "Starting EditAnswersActivity with Form id: " + item.getFormId());
+                startActivity(intent);
+            }
+        });
         refreshHistoryView();
     }
 
@@ -119,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         List<Form> forms = database.formDao().getAll();
         Log.i(LOG_INFORMATION, "No. of forms filled: " + forms.size());
         for (Form form : forms) {
-            HistoryItem entry = new HistoryItem(form.getPracticeType(), form.getCreatedDate());
+            HistoryItem entry = new HistoryItem(form.getId(), form.getPracticeType(), form.getCreatedDate());
             listViewAdapter.add(entry);
         }
     }

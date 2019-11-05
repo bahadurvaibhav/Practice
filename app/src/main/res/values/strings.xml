@@ -8,6 +8,7 @@
     <string name="story_dhv">Story - DHV</string>
     <string name="start">Start</string>
     <string name="submit">Submit</string>
+    <string name="update">Update</string>
 
     <string-array name="skills">
         <item>@string/joke</item>
