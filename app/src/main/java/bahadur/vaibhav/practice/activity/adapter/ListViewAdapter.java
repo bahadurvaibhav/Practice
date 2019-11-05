@@ -41,9 +41,9 @@ public class ListViewAdapter extends ArrayAdapter<HistoryItem> {
         // or inflated new if not possible
         View workingView = null;
 
-        if(null == convertView) {
+        if (null == convertView) {
             final Context context = getContext();
-            final LayoutInflater inflater = (LayoutInflater)context.getSystemService
+            final LayoutInflater inflater = (LayoutInflater) context.getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
 
             workingView = inflater.inflate(newsItemLayoutResource, null);
@@ -61,7 +61,7 @@ public class ListViewAdapter extends ArrayAdapter<HistoryItem> {
         ViewHolder viewHolder = null;
 
 
-        if(null == tag || !(tag instanceof ViewHolder)) {
+        if (null == tag || !(tag instanceof ViewHolder)) {
             viewHolder = new ViewHolder();
 
             viewHolder.skillTypeView = (TextView) workingView.findViewById(R.id.skill_type);

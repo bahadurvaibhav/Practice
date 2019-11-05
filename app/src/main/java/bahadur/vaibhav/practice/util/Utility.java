@@ -9,8 +9,8 @@ import com.google.android.material.snackbar.Snackbar;
 public class Utility {
 
     public void showSnackbarMessage(View view, String message) {
-         Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-         .setAction("Action", null).show();
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
     public static int convertToPixels(int dp, Resources resources) {
