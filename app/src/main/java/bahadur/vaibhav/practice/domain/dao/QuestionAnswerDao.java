@@ -1,4 +1,4 @@
-package bahadur.vaibhav.practice.domain;
+package bahadur.vaibhav.practice.domain.dao;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import bahadur.vaibhav.practice.domain.QuestionAnswer;
 
 @Dao
 public interface QuestionAnswerDao {

@@ -20,7 +20,7 @@ import bahadur.vaibhav.practice.database.AppDatabase;
 import bahadur.vaibhav.practice.domain.Form;
 import bahadur.vaibhav.practice.domain.PracticeType;
 import bahadur.vaibhav.practice.domain.Question;
-import bahadur.vaibhav.practice.domain.QuestionDao;
+import bahadur.vaibhav.practice.domain.dao.QuestionDao;
 import bahadur.vaibhav.practice.domain.QuestionType;
 
 import static bahadur.vaibhav.practice.util.Constants.LOG_INFORMATION;

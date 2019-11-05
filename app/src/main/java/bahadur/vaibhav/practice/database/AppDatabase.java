@@ -6,11 +6,11 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import bahadur.vaibhav.practice.domain.Form;
-import bahadur.vaibhav.practice.domain.FormDao;
+import bahadur.vaibhav.practice.domain.dao.FormDao;
 import bahadur.vaibhav.practice.domain.Question;
 import bahadur.vaibhav.practice.domain.QuestionAnswer;
-import bahadur.vaibhav.practice.domain.QuestionAnswerDao;
-import bahadur.vaibhav.practice.domain.QuestionDao;
+import bahadur.vaibhav.practice.domain.dao.QuestionAnswerDao;
+import bahadur.vaibhav.practice.domain.dao.QuestionDao;
 
 @Database(entities = {Form.class, QuestionAnswer.class, Question.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {

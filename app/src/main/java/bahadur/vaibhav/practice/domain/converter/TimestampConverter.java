@@ -1,4 +1,4 @@
-package bahadur.vaibhav.practice.domain;
+package bahadur.vaibhav.practice.domain.converter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
