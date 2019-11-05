@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="dialog"
+            type="bahadur.vaibhav.practice.activity.dialog.SelectSkillDialog"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/white_round_box"
+        android:padding="@dimen/dimen_15dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/TextViewSingle"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:padding="@dimen/dimen_2dp"
+                android:text="@string/select_skill"
+                android:textColor="@color/colorPrimary" />
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="@dimen/dimen_25dp"
+                android:layout_height="@dimen/dimen_25dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:onClick="@{dialog::onClick}"
+                android:src="@drawable/ic_close" />
+        </RelativeLayout>
+
+        <Spinner
+            android:id="@+id/sp_skill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/skills"
+            android:layout_marginTop="@dimen/dimen_30dp"
+            android:textSize="@dimen/txt_16" />
+
+        <TextView
+            android:id="@+id/start_button"
+            style="@style/SideButtonView"
+            android:text="@string/start"
+            android:layout_marginTop="@dimen/dimen_50dp"
+            android:layout_marginLeft="@dimen/dimen_25dp"
+            android:layout_marginRight="@dimen/dimen_25dp"
+            android:onClick="@{dialog::onClick}" />
+
+    </LinearLayout>
+
+</layout>
