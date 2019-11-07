@@ -95,6 +95,13 @@ public class MainActivity extends AppCompatActivity {
             questionDao.add(new Question("Write a story demonstrating high value", QuestionType.EXPANDABLE_ANSWER_TEXT, PracticeType.STORY_DHV, 2));
             questionDao.add(new Question("Rate this", QuestionType.RATING, PracticeType.STORY_DHV, 3));
             questionDao.add(new Question("Critique / Feedback / Improvements", QuestionType.EXPANDABLE_ANSWER_TEXT, PracticeType.STORY_DHV, 4));
+
+            // TODO: Summarize a book you read, or some topic, article that you read or a speech you heard (in your own words). Could be used for subjects your are studying. writing what it means to you helps you remember and also notice what you understand and missed out on.
+            // Cornell Note Taking System: Topic, Notes, Keywords/Questions, Summary
+
+            // TODO: Record 10 jokes or funny things from today that you read somewhere or noticed someone say
+
+            // TODO: Blessings, Forgive, CBT, What Went Well?, Self-Awareness Techniques (Why?, etc.), Face Reading, Palm Reading
         }
     }
 
