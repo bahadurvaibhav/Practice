@@ -44,7 +44,8 @@ class _StartPracticeDialogState extends State<StartPracticeDialog> {
   void startPractice() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PracticePage()),
+      MaterialPageRoute(
+          builder: (context) => PracticePage(skillType: dropdownValue)),
     );
   }
 
