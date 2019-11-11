@@ -1,4 +1,4 @@
 enum SkillType {
-  JOKE,
-  GRATITUDE,
+  Joke,
+  Gratitude,
 }
