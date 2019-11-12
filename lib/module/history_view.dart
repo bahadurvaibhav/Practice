@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:practice/database/database_helper.dart';
+import 'package:practice/database/form.dart';
 import 'package:practice/module/enum/skill_type.dart';
 import 'package:practice/module/practice_view.dart';
-
-import '../data/practice_item.dart';
-import 'presenter/practice_history_presenter.dart';
 
 class HomePage extends StatelessWidget {
   void selectPractice(context) {
@@ -17,6 +16,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Parent build method invoked");
     return Scaffold(
       appBar: AppBar(
         title: Text("History"),
@@ -42,16 +42,19 @@ class _StartPracticeDialogState extends State<StartPracticeDialog> {
   SkillType dropdownValue = SkillType.Joke;
 
   void startPractice() {
-    Navigator.pop(context);
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => PracticePage(skillType: dropdownValue)),
-    );
+    ).then((value) {
+      setState(() {});
+      Navigator.pop(context);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    print("Dialog build method invoked");
     return new AlertDialog(
       title: new Text('Select Skill'),
       content: new DropdownButton(
@@ -85,64 +88,73 @@ class History extends StatefulWidget {
   _HistoryState createState() => _HistoryState();
 }
 
-class _HistoryState extends State<History> implements PracticeHistoryContract {
-  PracticeHistoryPresenter _presenter;
+class _HistoryState extends State<History> {
+  DatabaseHelper helper = DatabaseHelper.instance;
+  List<PracticeForm> _historyItems;
+  bool _isSearching = true;
 
-  List<PracticeItem> _contacts;
-
-  bool _isSearching;
-
-  _HistoryState() {
-    _presenter = PracticeHistoryPresenter(this);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _isSearching = true;
-    _presenter.loadItems();
-  }
-
-  @override
-  void onLoadContactsComplete(List<PracticeItem> items) {
-    setState(() {
-      _contacts = items;
-      _isSearching = false;
+  refreshList() {
+    helper.getForms().then((items) {
+      if (items == null && _historyItems == null) {
+        // app newly installed and no data in database
+        setState(() {
+          _historyItems = new List();
+          _isSearching = false;
+        });
+      } else if (items != null && _historyItems == null) {
+        // show values from database
+        print('# of forms: ${items.length} & # of historyItems: 0');
+        setState(() {
+          _historyItems = items;
+          _isSearching = false;
+        });
+      } else if (items != null &&
+          _historyItems != null &&
+          items.length > _historyItems.length) {
+        // new form added by user
+        print(
+            '# of forms: ${items.length} & # of historyItems: ${_historyItems.length}');
+        setState(() {
+          _historyItems = items;
+          _isSearching = false;
+        });
+      }
     });
   }
 
   @override
-  void onLoadContactsError() {
-    // TODO: implement onLoadContactsError
-  }
-
-  @override
   Widget build(BuildContext context) {
+    print("Child build method invoked");
+    refreshList();
+//    print(
+//        'isSearching: $_isSearching # of historyItems: ${_historyItems.length}');
     var widget;
-
     if (_isSearching) {
       widget = Center(
           child: Padding(
               padding: EdgeInsets.only(left: 16.0, right: 16.0),
               child: CircularProgressIndicator()));
+    } else if (_historyItems != null && _historyItems.length == 0) {
+      widget = Text('No data found');
     } else {
       widget = ListView(
           padding: EdgeInsets.symmetric(vertical: 8.0),
-          children: _buildContactList());
+          children: _buildHistoryList());
     }
-
     return widget;
   }
 
-  List<_ContactListItem> _buildContactList() {
-    return _contacts.map((contact) => _ContactListItem(contact)).toList();
+  List<_HistoryListItem> _buildHistoryList() {
+    return _historyItems.map((contact) => _HistoryListItem(contact)).toList();
   }
 }
 
-class _ContactListItem extends ListTile {
-  _ContactListItem(PracticeItem contact)
+class _HistoryListItem extends ListTile {
+  _HistoryListItem(PracticeForm practiceForm)
       : super(
-            title: Text(contact.skillType),
-            subtitle: Text(contact.createdAt),
+            title: Text(practiceForm.skillType
+                .toString()
+                .substring(practiceForm.skillType.toString().indexOf('.') + 1)),
+            subtitle: Text(practiceForm.createdAt),
             leading: null);
 }

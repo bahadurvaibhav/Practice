@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 import 'package:practice/database/database_helper.dart';
 import 'package:practice/database/form.dart';
 import 'package:practice/database/question.dart';
@@ -21,7 +22,8 @@ class _PracticePageState extends State<PracticePage> {
   var questionAnswers = new Map();
 
   submit() {
-    PracticeForm newForm = new PracticeForm(widget.skillType, "");
+    String createdAt = DateFormat.yMMMMd("en_US").format(new DateTime.now());
+    PracticeForm newForm = new PracticeForm(widget.skillType, createdAt);
     var formId;
     helper.insertForm(newForm).then((value) {
       formId = value;
@@ -144,7 +146,7 @@ class _PracticePageState extends State<PracticePage> {
   }
 
   text(question) {
-    return getOuterStyle(question, null);
+    return getOuterStyle(question, new Container());
   }
 
   @override

@@ -14,6 +14,7 @@ dependencies:
   sqflite: ^1.1.7+1
   path_provider: ^0.4.1
   flutter_rating_bar: ^3.0.0
+  intl: ^0.16.0
 
 dev_dependencies:
   flutter_test:

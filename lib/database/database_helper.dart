@@ -85,12 +85,39 @@ class DatabaseHelper {
               $columnFormId INTEGER NOT NULL)
               ''');
 
+    // Joke
     await db.rawInsert(
         'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Write a joke", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Joke")');
     await db.rawInsert(
         'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Rate this", "QuestionType.RATING", "SkillType.Joke")');
     await db.rawInsert(
         'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "Why is this funny?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Joke")');
+
+    // Gratitude
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Write something new you are grateful for in the last 24 hours", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Gratitude")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Why is it important?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Gratitude")');
+
+    // Story_Object
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Pick any random object, thing, person from the surrounding", "QuestionType.ANSWER_TEXT", "SkillType.Story_Object")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Write a story based on above selection", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Story_Object")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "Rate this", "QuestionType.RATING", "SkillType.Story_Object")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(4, "Critique / Feedback / Improvements", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Story_Object")');
+
+    // Story_DHV
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "DHV Spikes: \n 1. Being a leader of men \n 2. Being the protector of loved ones \n 3. Being pre-selected by other women \n 4. Having a willingness to emote \n 5. Being a successful risk taker \n 6. Willingness to walk away", "QuestionType.TEXT", "SkillType.Story_DHV")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Write a story demonstrating high value", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Story_DHV")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "Rate this", "QuestionType.RATING", "SkillType.Story_DHV")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(4, "Critique / Feedback / Improvements", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Story_DHV")');
   }
 
   // Database helper methods:
@@ -131,6 +158,18 @@ class DatabaseHelper {
     return null;
   }
 
+  Future<PracticeForm> getFormById(int id) async {
+    Database db = await database;
+    List<Map> maps = await db.query(tableForm,
+        columns: [columnId, columnSkillType, columnCreatedAt],
+        where: '$columnId = ?',
+        whereArgs: [id]);
+    if (maps.length > 0) {
+      return PracticeForm.fromMap(maps.first);
+    }
+    return null;
+  }
+
   Future<List<Question>> getQuestionsBySkill(SkillType skillType) async {
     String skillTypeString = skillType.toString();
     Database db = await database;
@@ -166,6 +205,22 @@ class DatabaseHelper {
         questionAnswers[i] = QuestionAnswer.fromMap(maps[i]);
       }
       return questionAnswers;
+    }
+    return null;
+  }
+
+  Future<List<PracticeForm>> getForms() async {
+    Database db = await database;
+    List<Map> maps = await db.query(tableForm,
+        columns: [columnId, columnSkillType, columnCreatedAt],
+        where: null,
+        whereArgs: null);
+    if (maps.length > 0) {
+      List<PracticeForm> forms = new List(maps.length);
+      for (int i = 0; i < maps.length; i++) {
+        forms[i] = PracticeForm.fromMap(maps[i]);
+      }
+      return forms;
     }
     return null;
   }
