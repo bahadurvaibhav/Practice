@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:practice/database/database_helper.dart';
+import 'package:practice/database/form.dart';
 import 'package:practice/database/question.dart';
+import 'package:practice/database/question_answer.dart';
 import 'package:practice/module/enum/question_type.dart';
 import 'package:practice/module/enum/skill_type.dart';
 
@@ -16,16 +18,28 @@ class PracticePage extends StatefulWidget {
 
 class _PracticePageState extends State<PracticePage> {
   DatabaseHelper helper = DatabaseHelper.instance;
-  List<Question> questions = [];
+  var questionAnswers = new Map();
 
-  _save() async {
-//    Question question =
-//        Question(1, 'Write a joke', QuestionType.ANSWER_TEXT, SkillType.Joke);
-//    int id = await helper.insert(question);
-//    print('inserted row: $id');
+  submit() {
+    PracticeForm newForm = new PracticeForm(widget.skillType, "");
+    var formId;
+    helper.insertForm(newForm).then((value) {
+      formId = value;
+      questionAnswers.forEach((key, value) {
+        QuestionAnswer questionAnswer =
+            new QuestionAnswer(key, value.toString(), formId);
+        helper.insertQuestionAnswer(questionAnswer);
+      });
+    });
+    Navigator.pop(context);
   }
 
-  submit() {}
+  /* get question answers for Form id
+  helper.getQuestionAnswersByFormId(formId).then((value) {
+          var index = value.length - 1;
+          print(
+              'Question Answer with Form id: ${value[index].formId} and Question id: ${value[index].questionId} with text: ${value[index].answer}');
+        });*/
 
   showQuestionsAndSubmit(List<Question> questions) {
     return Column(
@@ -44,12 +58,9 @@ class _PracticePageState extends State<PracticePage> {
 
   showQuestionnaire(List<Question> questions) {
     List<Widget> items = new List<Widget>();
-    print('# of questions: ${questions.length}');
     questions.forEach((question) {
-      print('Question id: ${question.id}');
       items.add(showQuestion(question));
     });
-    print('# of widget questions: ${items.length}');
     return items;
   }
 
@@ -64,7 +75,6 @@ class _PracticePageState extends State<PracticePage> {
   }
 
   showQuestion(Question question) {
-    print('Adding question');
     switch (question.questionType) {
       case QuestionType.ANSWER_TEXT:
         return answerText(question);
@@ -73,7 +83,6 @@ class _PracticePageState extends State<PracticePage> {
         return rating(question);
         break;
       case QuestionType.EXPANDABLE_ANSWER_TEXT:
-        print('Adding expandable answer text');
         return expandableAnswerText(question);
         break;
       case QuestionType.TEXT:
@@ -96,7 +105,11 @@ class _PracticePageState extends State<PracticePage> {
   }
 
   answerText(question) {
-    return getOuterStyle(question, TextField());
+    return getOuterStyle(question, TextField(
+      onChanged: (text) {
+        questionAnswers[question.id] = text;
+      },
+    ));
   }
 
   rating(question) {
@@ -112,7 +125,7 @@ class _PracticePageState extends State<PracticePage> {
             color: Colors.amber,
           ),
           onRatingUpdate: (rating) {
-            // print(rating);
+            questionAnswers[question.id] = rating;
           },
         ));
   }
@@ -124,6 +137,9 @@ class _PracticePageState extends State<PracticePage> {
           keyboardType: TextInputType.multiline,
           minLines: 3,
           maxLines: null,
+          onChanged: (text) {
+            questionAnswers[question.id] = text;
+          },
         ));
   }
 
@@ -138,7 +154,7 @@ class _PracticePageState extends State<PracticePage> {
         title: Text("Practice"),
       ),
       body: FutureBuilder<List<Question>>(
-        future: helper.getBySkill(widget.skillType),
+        future: helper.getQuestionsBySkill(widget.skillType),
         builder: (context, snapshot) {
           if (!snapshot.hasData)
             return Center(child: CircularProgressIndicator());

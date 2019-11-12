@@ -2,18 +2,30 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:practice/database/question_answer.dart';
+import 'package:practice/module/enum/skill_type.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:practice/module/enum/skill_type.dart';
+import 'form.dart';
 import 'question.dart';
 
-// database table and column names
+// Question table
 final String tableQuestion = 'question';
 final String columnId = '_id';
 final String columnOrder = 'questionOrder';
 final String columnDescription = 'description';
 final String columnQuestionType = 'question_type';
 final String columnSkillType = 'skill_type';
+
+// Form table
+final String tableForm = 'form';
+final String columnCreatedAt = 'created_at';
+
+// QuestionAnswer table
+final String tableQuestionAnswer = 'question_answer';
+final String columnQuestionId = 'question_id';
+final String columnAnswer = 'answer';
+final String columnFormId = 'form_id';
 
 // singleton class to manage the database
 class DatabaseHelper {
@@ -58,6 +70,21 @@ class DatabaseHelper {
               $columnSkillType TEXT NOT NULL)
               ''');
 
+    await db.execute('''
+              CREATE TABLE $tableForm (
+              $columnId INTEGER PRIMARY KEY AUTOINCREMENT, 
+              $columnSkillType TEXT NOT NULL, 
+              $columnCreatedAt TEXT NOT NULL)
+              ''');
+
+    await db.execute('''
+              CREATE TABLE $tableQuestionAnswer (
+              $columnId INTEGER PRIMARY KEY AUTOINCREMENT, 
+              $columnQuestionId INTEGER NOT NULL, 
+              $columnAnswer TEXT NOT NULL, 
+              $columnFormId INTEGER NOT NULL)
+              ''');
+
     await db.rawInsert(
         'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Write a joke", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Joke")');
     await db.rawInsert(
@@ -68,13 +95,25 @@ class DatabaseHelper {
 
   // Database helper methods:
 
-  Future<int> insert(Question word) async {
+  Future<int> insertQuestion(Question question) async {
     Database db = await database;
-    int id = await db.insert(tableQuestion, word.toMap());
+    int id = await db.insert(tableQuestion, question.toMap());
     return id;
   }
 
-  Future<Question> get(int id) async {
+  Future<int> insertForm(PracticeForm form) async {
+    Database db = await database;
+    int id = await db.insert(tableForm, form.toMap());
+    return id;
+  }
+
+  Future<int> insertQuestionAnswer(QuestionAnswer questionAnswer) async {
+    Database db = await database;
+    int id = await db.insert(tableQuestionAnswer, questionAnswer.toMap());
+    return id;
+  }
+
+  Future<Question> getQuestionById(int id) async {
     Database db = await database;
     List<Map> maps = await db.query(tableQuestion,
         columns: [
@@ -92,7 +131,7 @@ class DatabaseHelper {
     return null;
   }
 
-  Future<List<Question>> getBySkill(SkillType skillType) async {
+  Future<List<Question>> getQuestionsBySkill(SkillType skillType) async {
     String skillTypeString = skillType.toString();
     Database db = await database;
     List<Map> maps = await db.query(tableQuestion,
@@ -115,7 +154,19 @@ class DatabaseHelper {
     return null;
   }
 
-// TODO: queryAllWords()
-// TODO: delete(int id)
-// TODO: update(Word word)
+  Future<List<QuestionAnswer>> getQuestionAnswersByFormId(int formId) async {
+    Database db = await database;
+    List<Map> maps = await db.query(tableQuestionAnswer,
+        columns: [columnId, columnQuestionId, columnAnswer, columnFormId],
+        where: '$columnFormId = ?',
+        whereArgs: [formId]);
+    if (maps.length > 0) {
+      List<QuestionAnswer> questionAnswers = new List(maps.length);
+      for (int i = 0; i < maps.length; i++) {
+        questionAnswers[i] = QuestionAnswer.fromMap(maps[i]);
+      }
+      return questionAnswers;
+    }
+    return null;
+  }
 }

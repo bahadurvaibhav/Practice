@@ -42,6 +42,7 @@ class _StartPracticeDialogState extends State<StartPracticeDialog> {
   SkillType dropdownValue = SkillType.Joke;
 
   void startPractice() {
+    Navigator.pop(context);
     Navigator.push(
       context,
       MaterialPageRoute(
