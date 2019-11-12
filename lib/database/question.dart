@@ -8,6 +8,7 @@ class Question {
   String description;
   QuestionType questionType;
   SkillType skillType;
+  String answer;
 
   Question(int columnOrder, String columnDescription,
       QuestionType columnQuestionType, SkillType columnSkillType) {

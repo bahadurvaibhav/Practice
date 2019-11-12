@@ -59,11 +59,11 @@ class DatabaseHelper {
               ''');
 
     await db.rawInsert(
-        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Write a joke", "QuestionType.ANSWER_TEXT", "SkillType.Joke")');
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Write a joke", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Joke")');
     await db.rawInsert(
         'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Rate this", "QuestionType.RATING", "SkillType.Joke")');
     await db.rawInsert(
-        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "Why is this funny?", "QuestionType.ANSWER_TEXT", "SkillType.Joke")');
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "Why is this funny?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Joke")');
   }
 
   // Database helper methods:
@@ -108,7 +108,7 @@ class DatabaseHelper {
     if (maps.length > 0) {
       List<Question> questions = new List(maps.length);
       for (int i = 0; i < maps.length; i++) {
-        questions[i] = Question.fromMap(maps.first);
+        questions[i] = Question.fromMap(maps[i]);
       }
       return questions;
     }
