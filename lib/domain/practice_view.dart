@@ -65,11 +65,13 @@ class _PracticePageState extends State<PracticePage> {
   showQuestionsAndSubmit(List<Question> questions) {
     return Column(
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: ListView(
-            shrinkWrap: true,
-            children: showQuestionnaire(questions),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: ListView(
+              shrinkWrap: true,
+              children: showQuestionnaire(questions),
+            ),
           ),
         ),
         showSubmit(),
