@@ -4,24 +4,30 @@ import 'package:practice/database/form.dart';
 import 'package:practice/module/enum/skill_type.dart';
 import 'package:practice/module/practice_view.dart';
 
+GlobalKey<_HistoryState> globalKey = GlobalKey();
+
 class HomePage extends StatelessWidget {
   void selectPractice(context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return new StartPracticeDialog();
+        return new StartPracticeDialog(callbackRefreshList);
       },
     );
   }
 
+  void callbackRefreshList() {
+    print('Home Page callback Refresh list called');
+    globalKey.currentState.refreshList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("Parent build method invoked");
     return Scaffold(
       appBar: AppBar(
         title: Text("History"),
       ),
-      body: History(),
+      body: History(key: globalKey),
       floatingActionButton: FloatingActionButton(
         onPressed: () => selectPractice(context),
         tooltip: 'Select Skill',
@@ -32,7 +38,9 @@ class HomePage extends StatelessWidget {
 }
 
 class StartPracticeDialog extends StatefulWidget {
-  const StartPracticeDialog({Key key}) : super(key: key);
+  Function callbackRefreshList;
+
+  StartPracticeDialog(this.callbackRefreshList);
 
   @override
   _StartPracticeDialogState createState() => _StartPracticeDialogState();
@@ -47,14 +55,13 @@ class _StartPracticeDialogState extends State<StartPracticeDialog> {
       MaterialPageRoute(
           builder: (context) => PracticePage(skillType: dropdownValue)),
     ).then((value) {
-      setState(() {});
+      widget.callbackRefreshList();
       Navigator.pop(context);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    print("Dialog build method invoked");
     return new AlertDialog(
       title: new Text('Select Skill'),
       content: new DropdownButton(
@@ -90,30 +97,35 @@ class History extends StatefulWidget {
 
 class _HistoryState extends State<History> {
   DatabaseHelper helper = DatabaseHelper.instance;
-  List<PracticeForm> _historyItems;
+  List<PracticeForm> _historyItems = new List();
   bool _isSearching = true;
 
+  @override
+  void initState() {
+    super.initState();
+    refreshList();
+  }
+
   refreshList() {
+    print('History refreshList called');
+    _isSearching = true;
     helper.getForms().then((items) {
-      if (items == null && _historyItems == null) {
+      if (items == null) {
         // app newly installed and no data in database
         setState(() {
           _historyItems = new List();
           _isSearching = false;
         });
-      } else if (items != null && _historyItems == null) {
-        // show values from database
-        print('# of forms: ${items.length} & # of historyItems: 0');
+      } else if (_historyItems.length == 0) {
+        // show values from database (items != null && _historyItems == null)
         setState(() {
           _historyItems = items;
           _isSearching = false;
         });
       } else if (items != null &&
-          _historyItems != null &&
+          _historyItems.length > 0 &&
           items.length > _historyItems.length) {
         // new form added by user
-        print(
-            '# of forms: ${items.length} & # of historyItems: ${_historyItems.length}');
         setState(() {
           _historyItems = items;
           _isSearching = false;
@@ -124,18 +136,17 @@ class _HistoryState extends State<History> {
 
   @override
   Widget build(BuildContext context) {
-    print("Child build method invoked");
-    refreshList();
-//    print(
-//        'isSearching: $_isSearching # of historyItems: ${_historyItems.length}');
     var widget;
     if (_isSearching) {
       widget = Center(
           child: Padding(
               padding: EdgeInsets.only(left: 16.0, right: 16.0),
               child: CircularProgressIndicator()));
-    } else if (_historyItems != null && _historyItems.length == 0) {
-      widget = Text('No data found');
+    } else if (_historyItems.length == 0) {
+      widget = Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text('No data found'),
+      );
     } else {
       widget = ListView(
           padding: EdgeInsets.symmetric(vertical: 8.0),
