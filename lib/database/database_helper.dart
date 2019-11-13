@@ -118,6 +118,64 @@ class DatabaseHelper {
         'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "Rate this", "QuestionType.RATING", "SkillType.Story_DHV")');
     await db.rawInsert(
         'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(4, "Critique / Feedback / Improvements", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Story_DHV")');
+
+    // Blessings
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Bless a person or thing from the last 24 hours", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Blessings")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Why is it important?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Blessings")');
+
+    // Forgive
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Bring up a memory, thought that is arising often, and make a conscious acknowledgement and then let it go. It doesn\'t only have to be to a person, can be to a situation as well \n \nBring up any situation, thought, memory you are holding onto. Let it go. Forgive it", "QuestionType.TEXT", "SkillType.Forgive")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Forgive", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Forgive")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "Why is it important?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Forgive")');
+
+    // CBT
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Feelings --> Thoughts --> Action --> Feeling --> ... \n CBT enters at Thoughts phase to change the cycle of negative emotions / memories / triggers", "QuestionType.TEXT", "SkillType.CBT")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "What is on your mind? (What is bothering you?)", "QuestionType.ANSWER_TEXT", "SkillType.CBT")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "What belief/thoughts/action is causing this?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.CBT")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(4, "Feeling?", "QuestionType.ANSWER_TEXT", "SkillType.CBT")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(5, "Positive intent of this belief?", "QuestionType.ANSWER_TEXT", "SkillType.CBT")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(6, "Reframe belief", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.CBT")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(7, "New Feeling?", "QuestionType.ANSWER_TEXT", "SkillType.CBT")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(8, "If new feeling is negative or neutral then reframe again. Use the reframe belief area.", "QuestionType.TEXT", "SkillType.CBT")');
+
+    // What Went Well
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Write something new that went well in the last 24 hours", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.What_Went_Well")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Why is it important?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.What_Went_Well")');
+
+    // Learning - Cornell Note Taking System
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Topic", "QuestionType.ANSWER_TEXT", "SkillType.Learning_Cornell_Note_Taking_System")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Notes", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Learning_Cornell_Note_Taking_System")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "Keywords / Questions", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Learning_Cornell_Note_Taking_System")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(4, "Summary", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Learning_Cornell_Note_Taking_System")');
+
+    // Record Joke
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Record a joke or funny thing that you read / heard in the last 24 hours", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Record_Joke")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Rate this", "QuestionType.RATING", "SkillType.Record_Joke")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "Why is this funny?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Record_Joke")');
+
+    // TODO: Self-Awareness Techniques (Why?, etc.), Face Reading, Palm Reading
   }
 
   // Database helper methods:

@@ -68,10 +68,11 @@ class _StartPracticeDialogState extends State<StartPracticeDialog> {
           value: dropdownValue,
           items: SkillType.values.map((SkillType skillType) {
             return DropdownMenuItem<SkillType>(
-                value: skillType,
-                child: Text(skillType
-                    .toString()
-                    .substring(skillType.toString().indexOf('.') + 1)));
+              value: skillType,
+              child: ClipRect(
+                child: Text(getSkillTypeDisplayValue(skillType)),
+              ),
+            );
           }).toList(),
           onChanged: (SkillType newValue) {
             setState(() {
@@ -143,10 +144,7 @@ class _HistoryState extends State<History> {
               padding: EdgeInsets.only(left: 16.0, right: 16.0),
               child: CircularProgressIndicator()));
     } else if (_historyItems.length == 0) {
-      widget = Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text('No data found'),
-      );
+      widget = Text('No data found');
     } else {
       widget = ListView(
           padding: EdgeInsets.symmetric(vertical: 8.0),
