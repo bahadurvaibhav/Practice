@@ -3,10 +3,18 @@ import 'package:practice/database/database_helper.dart';
 import 'package:practice/database/form.dart';
 import 'package:practice/domain/enum/skill_type.dart';
 import 'package:practice/domain/practice_view.dart';
+import 'package:practice/util/get_csv.dart';
 
 GlobalKey<_HistoryState> globalKey = GlobalKey();
 
 class HomePage extends StatelessWidget {
+  final DatabaseHelper helper = DatabaseHelper.instance;
+
+  void downloadData() {
+    print('Downloading data');
+    getCsv(helper);
+  }
+
   void selectPractice(context) {
     showDialog(
       context: context,
@@ -20,8 +28,6 @@ class HomePage extends StatelessWidget {
     print('Home Page callback Refresh list called');
     globalKey.currentState.refreshList();
   }
-
-  void downloadData() {}
 
   @override
   Widget build(BuildContext context) {

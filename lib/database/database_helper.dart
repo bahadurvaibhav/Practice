@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:practice/database/question_answer.dart';
 import 'package:practice/domain/enum/skill_type.dart';
 import 'package:sqflite/sqflite.dart';
+import 'form_question_answer.dart';
 
 import 'form.dart';
 import 'question.dart';
@@ -279,6 +280,21 @@ class DatabaseHelper {
         forms[i] = PracticeForm.fromMap(maps[i]);
       }
       return forms;
+    }
+    return null;
+  }
+
+  Future<List<FormQuestionAnswer>> getFormQuestionAnswers() async {
+    Database db = await database;
+    var sql =
+        'SELECT $columnFormId, $columnSkillType, $columnQuestionId, $columnAnswer FROM $tableForm INNER JOIN $tableQuestionAnswer ON $tableForm.$columnId = $tableQuestionAnswer.$columnFormId';
+    List<Map> maps = await db.rawQuery(sql);
+    if (maps.length > 0) {
+      List<FormQuestionAnswer> questionAnswers = new List(maps.length);
+      for (int i = 0; i < maps.length; i++) {
+        questionAnswers[i] = FormQuestionAnswer.fromMap(maps[i]);
+      }
+      return questionAnswers;
     }
     return null;
   }

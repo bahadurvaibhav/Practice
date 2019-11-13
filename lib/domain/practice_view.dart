@@ -49,7 +49,7 @@ class _PracticePageState extends State<PracticePage> {
   }
 
   submit() {
-    String createdAt = DateFormat.yMMMMd("en_US").format(new DateTime.now());
+    String createdAt = getDateNow();
     PracticeForm newForm = new PracticeForm(widget.skillType, createdAt);
     var formId;
     helper.insertForm(newForm).then((value) {
