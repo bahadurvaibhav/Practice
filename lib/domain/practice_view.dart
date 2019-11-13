@@ -5,8 +5,8 @@ import 'package:practice/database/database_helper.dart';
 import 'package:practice/database/form.dart';
 import 'package:practice/database/question.dart';
 import 'package:practice/database/question_answer.dart';
-import 'package:practice/module/enum/question_type.dart';
-import 'package:practice/module/enum/skill_type.dart';
+import 'package:practice/domain/enum/question_type.dart';
+import 'package:practice/domain/enum/skill_type.dart';
 import 'package:practice/util/utility.dart';
 
 class PracticePage extends StatefulWidget {

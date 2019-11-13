@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:practice/database/database_helper.dart';
 import 'package:practice/database/form.dart';
-import 'package:practice/module/enum/skill_type.dart';
-import 'package:practice/module/practice_view.dart';
+import 'package:practice/domain/enum/skill_type.dart';
+import 'package:practice/domain/practice_view.dart';
 
 GlobalKey<_HistoryState> globalKey = GlobalKey();
 
@@ -21,11 +21,20 @@ class HomePage extends StatelessWidget {
     globalKey.currentState.refreshList();
   }
 
+  void downloadData() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("History"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.file_download),
+            color: Colors.white,
+            onPressed: () => downloadData(),
+          )
+        ],
       ),
       body: History(key: globalKey),
       floatingActionButton: FloatingActionButton(

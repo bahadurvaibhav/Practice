@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:practice/module/history_view.dart';
+import 'package:practice/domain/history_view.dart';
 
 void main() {
   runApp(new MaterialApp(

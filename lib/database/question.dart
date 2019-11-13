@@ -1,5 +1,5 @@
-import 'package:practice/module/enum/question_type.dart';
-import 'package:practice/module/enum/skill_type.dart';
+import 'package:practice/domain/enum/question_type.dart';
+import 'package:practice/domain/enum/skill_type.dart';
 import 'database_helper.dart';
 
 class Question {

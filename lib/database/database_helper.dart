@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:practice/database/question_answer.dart';
-import 'package:practice/module/enum/skill_type.dart';
+import 'package:practice/domain/enum/skill_type.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'form.dart';
