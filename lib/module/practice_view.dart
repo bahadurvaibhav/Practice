@@ -7,11 +7,14 @@ import 'package:practice/database/question.dart';
 import 'package:practice/database/question_answer.dart';
 import 'package:practice/module/enum/question_type.dart';
 import 'package:practice/module/enum/skill_type.dart';
+import 'package:practice/util/utility.dart';
 
 class PracticePage extends StatefulWidget {
   final SkillType skillType;
+  final int formId;
 
-  PracticePage({Key key, @required this.skillType}) : super(key: key);
+  PracticePage({Key key, @required this.skillType, this.formId})
+      : super(key: key);
 
   @override
   _PracticePageState createState() => _PracticePageState();
@@ -20,6 +23,30 @@ class PracticePage extends StatefulWidget {
 class _PracticePageState extends State<PracticePage> {
   DatabaseHelper helper = DatabaseHelper.instance;
   var questionAnswers = new Map();
+  var serverQuestionAnswers = new Map();
+  bool readOnly = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.formId != null) {
+      getQuestionAnswers(widget.formId);
+    }
+  }
+
+  getQuestionAnswers(int formId) {
+    helper.getQuestionAnswersByFormId(formId).then((value) {
+      if (value != null) {
+        value.forEach((questionAnswer) {
+          serverQuestionAnswers[questionAnswer.questionId] =
+              questionAnswer.answer;
+        });
+        setState(() {
+          readOnly = true;
+        });
+      }
+    });
+  }
 
   submit() {
     String createdAt = DateFormat.yMMMMd("en_US").format(new DateTime.now());
@@ -35,13 +62,6 @@ class _PracticePageState extends State<PracticePage> {
     });
     Navigator.pop(context);
   }
-
-  /* get question answers for Form id
-  helper.getQuestionAnswersByFormId(formId).then((value) {
-          var index = value.length - 1;
-          print(
-              'Question Answer with Form id: ${value[index].formId} and Question id: ${value[index].questionId} with text: ${value[index].answer}');
-        });*/
 
   showQuestionsAndSubmit(List<Question> questions) {
     return Column(
@@ -67,13 +87,17 @@ class _PracticePageState extends State<PracticePage> {
   }
 
   showSubmit() {
-    return FlatButton(
-      color: Colors.blue,
-      textColor: Colors.white,
-      splashColor: Colors.blueAccent,
-      onPressed: () => submit(),
-      child: Text('Submit'),
-    );
+    if (!readOnly) {
+      return FlatButton(
+        color: Colors.blue,
+        textColor: Colors.white,
+        splashColor: Colors.blueAccent,
+        onPressed: () => submit(),
+        child: Text('Submit'),
+      );
+    } else {
+      return SizedBox.shrink();
+    }
   }
 
   showQuestion(Question question) {
@@ -107,29 +131,52 @@ class _PracticePageState extends State<PracticePage> {
   }
 
   answerText(question) {
-    return getOuterStyle(question, TextField(
-      onChanged: (text) {
-        questionAnswers[question.id] = text;
-      },
-    ));
+    return getOuterStyle(
+        question,
+        TextField(
+          enabled: !readOnly,
+          decoration:
+              new InputDecoration(hintText: serverQuestionAnswers[question.id]),
+          onChanged: (text) {
+            questionAnswers[question.id] = text;
+          },
+        ));
   }
 
   rating(question) {
-    return getOuterStyle(
-        question,
-        RatingBar(
-          direction: Axis.horizontal,
-          allowHalfRating: true,
-          itemCount: 5,
-          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-          itemBuilder: (context, _) => Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          onRatingUpdate: (rating) {
-            questionAnswers[question.id] = rating;
-          },
-        ));
+    var widget;
+    if (readOnly) {
+      var ratingBar = RatingBar(
+        initialRating: getDouble(serverQuestionAnswers[question.id]),
+        direction: Axis.horizontal,
+        allowHalfRating: true,
+        itemCount: 5,
+        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+        itemBuilder: (context, _) => Icon(
+          Icons.star,
+          color: Colors.amber,
+        ),
+        onRatingUpdate: (rating) {
+          questionAnswers[question.id] = rating;
+        },
+      );
+      widget = new FocusScope(node: new FocusScopeNode(), child: ratingBar);
+    } else {
+      widget = RatingBar(
+        direction: Axis.horizontal,
+        allowHalfRating: true,
+        itemCount: 5,
+        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+        itemBuilder: (context, _) => Icon(
+          Icons.star,
+          color: Colors.amber,
+        ),
+        onRatingUpdate: (rating) {
+          questionAnswers[question.id] = rating;
+        },
+      );
+    }
+    return getOuterStyle(question, widget);
   }
 
   expandableAnswerText(question) {
@@ -139,6 +186,9 @@ class _PracticePageState extends State<PracticePage> {
           keyboardType: TextInputType.multiline,
           minLines: 3,
           maxLines: null,
+          enabled: !readOnly,
+          decoration:
+              new InputDecoration(hintText: serverQuestionAnswers[question.id]),
           onChanged: (text) {
             questionAnswers[question.id] = text;
           },

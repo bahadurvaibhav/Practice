@@ -154,16 +154,28 @@ class _HistoryState extends State<History> {
   }
 
   List<_HistoryListItem> _buildHistoryList() {
-    return _historyItems.map((contact) => _HistoryListItem(contact)).toList();
+    return _historyItems
+        .map((contact) => _HistoryListItem(context, contact))
+        .toList();
   }
 }
 
 class _HistoryListItem extends ListTile {
-  _HistoryListItem(PracticeForm practiceForm)
+  _HistoryListItem(BuildContext context, PracticeForm practiceForm)
       : super(
             title: Text(practiceForm.skillType
                 .toString()
                 .substring(practiceForm.skillType.toString().indexOf('.') + 1)),
             subtitle: Text(practiceForm.createdAt),
-            leading: null);
+            leading: null,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PracticePage(
+                          skillType: practiceForm.skillType,
+                          formId: practiceForm.id,
+                        )),
+              );
+            });
 }
