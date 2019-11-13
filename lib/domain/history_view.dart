@@ -160,7 +160,10 @@ class _HistoryState extends State<History> {
               padding: EdgeInsets.only(left: 16.0, right: 16.0),
               child: CircularProgressIndicator()));
     } else if (_historyItems.length == 0) {
-      widget = Text('No data found');
+      widget = Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text('No data found'),
+      );
     } else {
       widget = ListView(
           padding: EdgeInsets.symmetric(vertical: 8.0),
