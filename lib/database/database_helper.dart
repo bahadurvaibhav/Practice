@@ -136,7 +136,7 @@ class DatabaseHelper {
 
     // CBT
     await db.rawInsert(
-        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Feelings --> Thoughts --> Action --> Feeling --> ... \n CBT enters at Thoughts phase to change the cycle of negative emotions / memories / triggers", "QuestionType.TEXT", "SkillType.CBT")');
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Feelings --> Thoughts --> Action --> Feeling --> ... \n\nCBT enters at Thoughts phase to change the cycle of negative emotions / memories / triggers", "QuestionType.TEXT", "SkillType.CBT")');
     await db.rawInsert(
         'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "What is on your mind? (What is bothering you?)", "QuestionType.ANSWER_TEXT", "SkillType.CBT")');
     await db.rawInsert(

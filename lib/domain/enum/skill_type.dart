@@ -8,6 +8,7 @@ enum SkillType {
   What_Went_Well,
   Learning_Cornell_Note_Taking_System,
   Record_Joke,
+  CBT,
 }
 
 String getSkillTypeDisplayValue(SkillType skillType) {
@@ -16,6 +17,7 @@ String getSkillTypeDisplayValue(SkillType skillType) {
     case SkillType.Gratitude:
     case SkillType.Blessings:
     case SkillType.Forgive:
+    case SkillType.CBT:
       return skillType
           .toString()
           .substring(skillType.toString().indexOf('.') + 1);

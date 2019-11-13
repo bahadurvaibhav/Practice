@@ -178,9 +178,7 @@ class _HistoryState extends State<History> {
 class _HistoryListItem extends ListTile {
   _HistoryListItem(BuildContext context, PracticeForm practiceForm)
       : super(
-            title: Text(practiceForm.skillType
-                .toString()
-                .substring(practiceForm.skillType.toString().indexOf('.') + 1)),
+            title: Text(getSkillTypeDisplayValue(practiceForm.skillType)),
             subtitle: Text(practiceForm.createdAt),
             leading: null,
             onTap: () {

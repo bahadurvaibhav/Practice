@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:practice/database/database_helper.dart';
+import 'package:practice/domain/enum/question_type.dart';
 import 'package:practice/domain/enum/skill_type.dart';
-//import 'package:simple_permissions/simple_permissions.dart';
+import 'package:practice/util/utility.dart';
+import 'package:simple_permissions/simple_permissions.dart';
 
 getCsv(DatabaseHelper helper) async {
   helper.getFormQuestionAnswers().then((formQuestionAnswers) {
@@ -33,7 +35,9 @@ getCsv(DatabaseHelper helper) async {
 
         List<dynamic> questionsDescriptionRow = List();
         questions.forEach((question) {
-          questionsDescriptionRow.add(question.description);
+          if (question.questionType != QuestionType.TEXT) {
+            questionsDescriptionRow.add(question.description);
+          }
         });
         rows.add(questionsDescriptionRow);
 
@@ -69,16 +73,15 @@ getCsv(DatabaseHelper helper) async {
 
 downloadCsv(List<List<dynamic>> rows) async {
   print('Received permission');
-//  await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
-//  bool checkPermission =
-//      await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
-//  if (checkPermission) {
-  String dir =
-      (await getExternalStorageDirectory()).absolute.path + "/documents";
-  var file = "$dir";
-  print("FILE: $file");
-  File f = new File(file + "filename.csv");
-  String csv = const ListToCsvConverter().convert(rows);
-  f.writeAsString(csv);
-//  }
+  await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
+  bool checkPermission =
+      await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
+  if (checkPermission) {
+    String dir = (await getExternalStorageDirectory()).absolute.path;
+    var file = "$dir";
+    print("FILE: $file");
+    File f = new File(file + "filename$getIsoDateNow.csv");
+    String csv = const ListToCsvConverter().convert(rows);
+    f.writeAsString(csv);
+  }
 }
