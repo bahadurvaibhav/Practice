@@ -6,13 +6,14 @@ import 'package:practice/domain/practice_view.dart';
 import 'package:practice/util/get_csv.dart';
 
 GlobalKey<_HistoryState> globalKey = GlobalKey();
+GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
 class HomePage extends StatelessWidget {
   final DatabaseHelper helper = DatabaseHelper.instance;
 
-  void downloadData() {
+  void downloadData(BuildContext context, scaffoldKey) {
     print('Downloading data');
-    getCsv(helper);
+    getCsv(helper, context, scaffoldKey, this.callbackRefreshList);
   }
 
   void selectPractice(context) {
@@ -32,13 +33,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text("History"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.file_download),
             color: Colors.white,
-            onPressed: () => downloadData(),
+            onPressed: () => downloadData(context, scaffoldKey),
           )
         ],
       ),
@@ -123,7 +125,6 @@ class _HistoryState extends State<History> {
   }
 
   refreshList() {
-    print('History refreshList called');
     _isSearching = true;
     helper.getForms().then((items) {
       if (items == null) {

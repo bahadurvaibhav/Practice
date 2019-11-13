@@ -5,9 +5,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:practice/database/question_answer.dart';
 import 'package:practice/domain/enum/skill_type.dart';
 import 'package:sqflite/sqflite.dart';
-import 'form_question_answer.dart';
 
 import 'form.dart';
+import 'form_question_answer.dart';
 import 'question.dart';
 
 // Question table
@@ -297,5 +297,13 @@ class DatabaseHelper {
       return questionAnswers;
     }
     return null;
+  }
+
+  emptyFormsQuestionAnswers() async {
+    Database db = await database;
+    var sql = 'DELETE FROM $tableForm';
+    db.rawDelete(sql);
+    var sql2 = 'DELETE FROM $tableQuestionAnswer';
+    db.rawDelete(sql2);
   }
 }

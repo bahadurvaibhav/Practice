@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:csv/csv.dart';
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:practice/database/database_helper.dart';
 import 'package:practice/domain/enum/question_type.dart';
@@ -8,11 +9,14 @@ import 'package:practice/domain/enum/skill_type.dart';
 import 'package:practice/util/utility.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 
-getCsv(DatabaseHelper helper) async {
+Future<dynamic> getCsv(DatabaseHelper helper, BuildContext context, scaffoldKey,
+    callbackRefreshList) async {
   var formQuestionAnswers = await helper.getFormQuestionAnswers();
   if (formQuestionAnswers == null) {
     print('No practice sessions recorded');
-    // TODO: Show alert
+    scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text('Nothing to save. Add a record first'),
+    ));
     return;
   }
   var skillTypeQuestionAnswersMap = new Map();
@@ -27,7 +31,6 @@ getCsv(DatabaseHelper helper) async {
   List<List<dynamic>> rows = List<List<dynamic>>();
   SkillType.values.forEach((skillType) async {
     var questions = await helper.getQuestionsBySkill(skillType);
-    print('Skill Type: $skillType');
     var formQuestionAnswers = skillTypeQuestionAnswersMap[skillType];
     if (formQuestionAnswers == null) {
       return;
@@ -65,10 +68,46 @@ getCsv(DatabaseHelper helper) async {
     emptyRow.add("");
     rows.add(emptyRow);
   });
-  downloadCsv(rows);
+  await downloadCsv(rows, context, scaffoldKey);
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return new DeleteDataAlert(callbackRefreshList);
+    },
+  );
 }
 
-downloadCsv(List<List<dynamic>> rows) async {
+class DeleteDataAlert extends StatelessWidget {
+  DatabaseHelper helper = DatabaseHelper.instance;
+  Function callbackRefreshList;
+
+  DeleteDataAlert(this.callbackRefreshList);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Would you like to delete all saved data?"),
+      actions: <Widget>[
+        FlatButton(
+          child: Text("No"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        FlatButton(
+          child: Text("Yes"),
+          onPressed: () {
+            helper.emptyFormsQuestionAnswers();
+            this.callbackRefreshList();
+            Navigator.pop(context);
+          },
+        )
+      ],
+    );
+  }
+}
+
+downloadCsv(List<List<dynamic>> rows, BuildContext context, scaffoldKey) async {
   await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
   bool checkPermission =
       await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
@@ -79,5 +118,8 @@ downloadCsv(List<List<dynamic>> rows) async {
     File f = new File(file + "practice_backup_$date.csv");
     String csv = const ListToCsvConverter().convert(rows);
     f.writeAsString(csv);
+    scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text('Backup saved in internal storage'),
+    ));
   }
 }
