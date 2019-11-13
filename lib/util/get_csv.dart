@@ -27,7 +27,10 @@ getCsv(DatabaseHelper helper) async {
     List<List<dynamic>> rows = List<List<dynamic>>();
     SkillType.values.forEach((skillType) {
       helper.getQuestionsBySkill(skillType).then((questions) {
-        print('SkillType: $skillType');
+        var formQuestionAnswers = skillTypeQuestionAnswersMap[skillType];
+        if (formQuestionAnswers == null) {
+          return;
+        }
 
         List<dynamic> headingRow = List();
         headingRow.add(getSkillTypeDisplayValue(skillType));
@@ -40,11 +43,6 @@ getCsv(DatabaseHelper helper) async {
           }
         });
         rows.add(questionsDescriptionRow);
-
-        var formQuestionAnswers = skillTypeQuestionAnswersMap[skillType];
-        if (formQuestionAnswers == null) {
-          return;
-        }
 
         var formIdQuestionAnswersMap = new Map();
         formQuestionAnswers.forEach((formQuestionAnswer) {
@@ -72,15 +70,14 @@ getCsv(DatabaseHelper helper) async {
 }
 
 downloadCsv(List<List<dynamic>> rows) async {
-  print('Received permission');
   await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
   bool checkPermission =
       await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
   if (checkPermission) {
-    String dir = (await getExternalStorageDirectory()).absolute.path;
+    String dir = (await getExternalStorageDirectory()).absolute.path + "/";
     var file = "$dir";
-    print("FILE: $file");
-    File f = new File(file + "filename$getIsoDateNow.csv");
+    var date = getDateTimeNow2();
+    File f = new File(file + "practice_backup_$date.csv");
     String csv = const ListToCsvConverter().convert(rows);
     f.writeAsString(csv);
   }
