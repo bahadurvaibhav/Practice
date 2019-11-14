@@ -17,6 +17,7 @@ dependencies:
   intl: ^0.16.0
   csv: ^4.0.3
   simple_permissions: ^0.1.9
+  transparent_image: ^1.0.0
 
 dev_dependencies:
   flutter_test:

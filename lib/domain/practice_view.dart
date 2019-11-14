@@ -8,6 +8,7 @@ import 'package:practice/database/question_answer.dart';
 import 'package:practice/domain/enum/question_type.dart';
 import 'package:practice/domain/enum/skill_type.dart';
 import 'package:practice/util/utility.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class PracticePage extends StatefulWidget {
   final SkillType skillType;
@@ -137,13 +138,41 @@ class _PracticePageState extends State<PracticePage> {
   }
 
   imageUrl(question) {
+    var pasteIconWidget;
     if (readOnly) {
       questionIdImageUrl[question.id] = serverQuestionAnswers[question.id];
+      pasteIconWidget = SizedBox.shrink();
+    } else {
+      pasteIconWidget = IconButton(
+        icon: Icon(Icons.content_paste),
+        color: Colors.amber,
+        onPressed: () async {
+          ClipboardData data = await Clipboard.getData('text/plain');
+          questionAnswers[question.id] = data.text;
+          setState(() {
+            serverQuestionAnswers[question.id] = data.text;
+            questionIdImageUrl[question.id] = data.text;
+          });
+        },
+      );
     }
 
     var imageWidget = questionIdImageUrl[question.id] == null
         ? SizedBox.shrink()
-        : Image.network(questionIdImageUrl[question.id]);
+        : Stack(
+            children: [
+              Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: CircularProgressIndicator(),
+              )),
+              Center(
+                child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage,
+                    image: questionIdImageUrl[question.id]),
+              )
+            ],
+          );
 
     return getOuterStyle(
         question,
@@ -153,25 +182,14 @@ class _PracticePageState extends State<PracticePage> {
               children: <Widget>[
                 Expanded(
                   child: TextField(
-                    enabled: !readOnly,
+                    readOnly: true,
                     decoration: new InputDecoration(
-                        hintText: serverQuestionAnswers[question.id]),
+                        hintText: serverQuestionAnswers[question.id],
+                        suffixIcon: pasteIconWidget),
                     onChanged: (text) {
                       questionAnswers[question.id] = text;
                     },
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.content_paste),
-                  color: Colors.amber,
-                  onPressed: () async {
-                    ClipboardData data = await Clipboard.getData('text/plain');
-                    questionAnswers[question.id] = data.text;
-                    setState(() {
-                      serverQuestionAnswers[question.id] = data.text;
-                      questionIdImageUrl[question.id] = data.text;
-                    });
-                  },
                 ),
               ],
             ),
