@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:practice/database/database_helper.dart';
 import 'package:practice/database/form.dart';
@@ -24,6 +25,7 @@ class _PracticePageState extends State<PracticePage> {
   var questionAnswers = new Map();
   var serverQuestionAnswers = new Map();
   bool readOnly = false;
+  var questionIdImageUrl = new Map();
 
   @override
   void initState() {
@@ -115,6 +117,9 @@ class _PracticePageState extends State<PracticePage> {
       case QuestionType.TEXT:
         return text(question);
         break;
+      case QuestionType.IMAGE_URL:
+        return imageUrl(question);
+        break;
     }
   }
 
@@ -129,6 +134,50 @@ class _PracticePageState extends State<PracticePage> {
         ],
       ),
     );
+  }
+
+  imageUrl(question) {
+    if (readOnly) {
+      questionIdImageUrl[question.id] = serverQuestionAnswers[question.id];
+    }
+
+    var imageWidget = questionIdImageUrl[question.id] == null
+        ? SizedBox.shrink()
+        : Image.network(questionIdImageUrl[question.id]);
+
+    return getOuterStyle(
+        question,
+        Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    enabled: !readOnly,
+                    decoration: new InputDecoration(
+                        hintText: serverQuestionAnswers[question.id]),
+                    onChanged: (text) {
+                      questionAnswers[question.id] = text;
+                    },
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.content_paste),
+                  color: Colors.amber,
+                  onPressed: () async {
+                    ClipboardData data = await Clipboard.getData('text/plain');
+                    questionAnswers[question.id] = data.text;
+                    setState(() {
+                      serverQuestionAnswers[question.id] = data.text;
+                      questionIdImageUrl[question.id] = data.text;
+                    });
+                  },
+                ),
+              ],
+            ),
+            imageWidget,
+          ],
+        ));
   }
 
   answerText(question) {

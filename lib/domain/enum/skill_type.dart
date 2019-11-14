@@ -9,6 +9,8 @@ enum SkillType {
   Learning_Cornell_Note_Taking_System,
   Record_Joke,
   CBT,
+  Face_Reading,
+  Palmistry,
 }
 
 String getSkillTypeDisplayValue(SkillType skillType) {
@@ -18,6 +20,7 @@ String getSkillTypeDisplayValue(SkillType skillType) {
     case SkillType.Blessings:
     case SkillType.Forgive:
     case SkillType.CBT:
+    case SkillType.Palmistry:
       return skillType
           .toString()
           .substring(skillType.toString().indexOf('.') + 1);
@@ -31,5 +34,7 @@ String getSkillTypeDisplayValue(SkillType skillType) {
       return "Learning - Cornell Note";
     case SkillType.Record_Joke:
       return "Record Joke";
+    case SkillType.Face_Reading:
+      return "Face Reading";
   }
 }

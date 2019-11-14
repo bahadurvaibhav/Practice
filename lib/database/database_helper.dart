@@ -176,7 +176,19 @@ class DatabaseHelper {
     await db.rawInsert(
         'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "Why is this funny?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Record_Joke")');
 
-    // TODO: Self-Awareness Techniques (Why?, etc.), Face Reading, Palm Reading
+    // Face Reading
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Image URL of a Face", "QuestionType.IMAGE_URL", "SkillType.Face_Reading")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Deduce personality of above person", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Face_Reading")');
+
+    // Palmistry
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Image URL of a person\'s hand", "QuestionType.IMAGE_URL", "SkillType.Palmistry")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Deduce personality of above person", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Palmistry")');
+
+    // TODO: Self-Awareness Techniques (Why?, etc.)
   }
 
   // Database helper methods:

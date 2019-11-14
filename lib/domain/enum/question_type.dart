@@ -3,4 +3,5 @@ enum QuestionType {
   ANSWER_TEXT,
   EXPANDABLE_ANSWER_TEXT,
   RATING,
+  IMAGE_URL,
 }
