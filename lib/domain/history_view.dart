@@ -129,12 +129,15 @@ class _HistoryState extends State<History> {
     helper.getForms().then((items) {
       if (items == null) {
         // app newly installed and no data in database
+        print('items: null and _historyItems: ${_historyItems.length}');
         setState(() {
           _historyItems = new List();
           _isSearching = false;
         });
       } else if (_historyItems.length == 0) {
         // show values from database (items != null && _historyItems == null)
+        print(
+            'items: ${items.length} and _historyItems: ${_historyItems.length}');
         setState(() {
           _historyItems = items;
           _isSearching = false;
@@ -143,8 +146,14 @@ class _HistoryState extends State<History> {
           _historyItems.length > 0 &&
           items.length > _historyItems.length) {
         // new form added by user
+        print(
+            'items: ${items.length} and _historyItems: ${_historyItems.length}');
         setState(() {
           _historyItems = items;
+          _isSearching = false;
+        });
+      } else {
+        setState(() {
           _isSearching = false;
         });
       }
