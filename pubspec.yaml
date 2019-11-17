@@ -16,9 +16,10 @@ dependencies:
   flutter_rating_bar: ^3.0.0
   intl: ^0.16.0
   csv: ^4.0.3
-  simple_permissions: ^0.1.9
   transparent_image: ^1.0.0
   video_player: ^0.10.2+5
+  youtube_player_flutter: ^6.0.3+2
+  permission_handler: '^4.0.0'
 
 module:
   androidX: true

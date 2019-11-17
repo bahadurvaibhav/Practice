@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:practice/database/database_helper.dart';
 import 'package:practice/domain/enum/question_type.dart';
 import 'package:practice/domain/enum/skill_type.dart';
 import 'package:practice/util/utility.dart';
-import 'package:simple_permissions/simple_permissions.dart';
 
 Future<dynamic> getCsv(DatabaseHelper helper, BuildContext context, scaffoldKey,
     callbackRefreshList) async {
@@ -108,9 +108,11 @@ class DeleteDataAlert extends StatelessWidget {
 }
 
 downloadCsv(List<List<dynamic>> rows, BuildContext context, scaffoldKey) async {
-  await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
-  bool checkPermission =
-      await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
+  Map<PermissionGroup, PermissionStatus> permissions =
+      await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+  PermissionStatus permission =
+      await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+  bool checkPermission = permission == PermissionStatus.granted;
   if (checkPermission) {
     String dir = (await getExternalStorageDirectory()).absolute.path + "/";
     var file = "$dir";
