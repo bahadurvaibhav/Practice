@@ -188,6 +188,22 @@ class DatabaseHelper {
     await db.rawInsert(
         'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Deduce personality of above person", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Palmistry")');
 
+    // Handwriting_Analysis
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Image URL of a person\'s handwriting", "QuestionType.IMAGE_URL", "SkillType.Handwriting_Analysis")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Deduce personality of above person", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Handwriting_Analysis")');
+
+    // Story_Journal
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Write a story from last 24 hours", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Story_Journal")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Rate this", "QuestionType.RATING", "SkillType.Story_Journal")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "What did you like about this?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Story_Journal")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(4, "What can be improved?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Story_Journal")');
+
     // TODO: Self-Awareness Techniques (Why?, etc.)
 
     // TODO: Handwriting analysis (same questions as palmistry)
@@ -216,8 +232,6 @@ class DatabaseHelper {
     // TODO: C6 #5 Tell me about a time worksheet
 
     // ** TODO: Story Journal (In last 24 hours write about something that moved you, interesting, funny, scary, etc.)
-
-    // ** TODO: Rename Joke to Joke Journal
   }
 
   // Database helper methods:

@@ -64,7 +64,7 @@ class StartPracticeDialog extends StatefulWidget {
 }
 
 class _StartPracticeDialogState extends State<StartPracticeDialog> {
-  SkillType dropdownValue = SkillType.Joke;
+  SkillType dropdownValue = SkillType.Gratitude;
 
   void startPractice() {
     Navigator.push(

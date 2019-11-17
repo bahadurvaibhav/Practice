@@ -1,16 +1,18 @@
 enum SkillType {
-  Joke,
   Gratitude,
-  Story_Object,
-  Story_DHV,
+  CBT,
+  What_Went_Well,
+  Story_Journal,
+  Joke,
   Blessings,
   Forgive,
-  What_Went_Well,
+  Story_Object,
+  Story_DHV,
   Learning_Cornell_Note_Taking_System,
   Record_Joke,
-  CBT,
   Face_Reading,
   Palmistry,
+  Handwriting_Analysis,
 }
 
 String getSkillTypeDisplayValue(SkillType skillType) {
@@ -37,5 +39,9 @@ String getSkillTypeDisplayValue(SkillType skillType) {
       return "Record Joke";
     case SkillType.Face_Reading:
       return "Face Reading";
+    case SkillType.Story_Journal:
+      return "Story Journal";
+    case SkillType.Handwriting_Analysis:
+      return "Handwriting Analysis";
   }
 }
