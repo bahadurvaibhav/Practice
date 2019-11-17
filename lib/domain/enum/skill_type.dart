@@ -16,6 +16,7 @@ enum SkillType {
 String getSkillTypeDisplayValue(SkillType skillType) {
   switch (skillType) {
     case SkillType.Joke:
+      return "Joke Journal";
     case SkillType.Gratitude:
     case SkillType.Blessings:
     case SkillType.Forgive:

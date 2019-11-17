@@ -189,6 +189,35 @@ class DatabaseHelper {
         'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Deduce personality of above person", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Palmistry")');
 
     // TODO: Self-Awareness Techniques (Why?, etc.)
+
+    // TODO: Handwriting analysis (same questions as palmistry)
+
+    // TODO: Record an audio of you telling a 1 minute story. Record same story in flat, monotone. Listen to it. Comment on the non-verbals
+    // Record audio as sports commentator. Record audio as journalist
+
+    // TODO: Record a video of yourself telling a 1 min story. Comment on the non-verbals
+
+    // ** TODO: Watch a youtube video. Mute audio. Comment on the non-verbals. Guess what they are conveying
+
+    // TODO: TAPP Exercise. TAPP Topics. Pick a TAPP topic. Share an interesting fact about it
+    // THINGS: Technology, Books, Clothes, Cars, Movies, TV Shows, Food, Drink, and Weather
+    // ACTIVITIES: Hobbies, Volunteering, Sports, Fitness, Diets, Entertainment, Gaming, Education, Dating, Vacations, Shopping, and Careers
+    // PEOPLE: Kids/Parenting, Family, Pets, Gossip, Relationships, Opposite Sex, You, Them, Culture, Common friends/Co-workers, Local/Global News, Appearance, and Human Behavior
+    // PLACES: Surroundings, Cities, Landmarks, States, Restaurants, Festivals, Houses, and Stores
+
+    // TODO: C6 #2 (within 3 seconds) and #3 (personal take)
+
+    // TODO: C6 #4 Opinion inventory worksheet
+
+    // TODO: Sprint Retrospective (every 2 weeks)
+
+    // TODO: Power of Full Engagement Value worksheet
+
+    // TODO: C6 #5 Tell me about a time worksheet
+
+    // ** TODO: Story Journal (In last 24 hours write about something that moved you, interesting, funny, scary, etc.)
+
+    // ** TODO: Rename Joke to Joke Journal
   }
 
   // Database helper methods:
