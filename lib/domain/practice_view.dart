@@ -241,6 +241,8 @@ class _PracticePageState extends State<PracticePage> {
   }
 
   getYoutubeVideoPlayer(String videoUrl) {
+    // TODO: If user enters another URL on top, load that one
+
     String videoId = YoutubePlayer.convertUrlToId(videoUrl);
     return Column(
       children: <Widget>[
@@ -249,7 +251,7 @@ class _PracticePageState extends State<PracticePage> {
           showVideoProgressIndicator: true,
           progressIndicatorColor: Colors.blueAccent,
           onReady: () {
-            print('is ready');
+            print('youtube player is ready');
             _isPlayerReady = true;
             _youtubePlayerController.load(videoId);
           },
