@@ -204,6 +204,18 @@ class DatabaseHelper {
     await db.rawInsert(
         'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(4, "What can be improved?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Story_Journal")');
 
+    // Cold_Read_Video
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(1, "Video URL of people interacting", "QuestionType.VIDEO_URL", "SkillType.Cold_Read_Video")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(2, "Deduce the expressions. Why?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Cold_Read_Video")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(3, "What are they talking about? Why?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Cold_Read_Video")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(4, "Unmute video", "QuestionType.TEXT", "SkillType.Cold_Read_Video")');
+    await db.rawInsert(
+        'INSERT INTO $tableQuestion ($columnOrder, $columnDescription, $columnQuestionType, $columnSkillType) VALUES(5, "How is your deduction different from the actual words spoken? Why?", "QuestionType.EXPANDABLE_ANSWER_TEXT", "SkillType.Cold_Read_Video")');
+
     // TODO: Self-Awareness Techniques (Why?, etc.)
 
     // TODO: Handwriting analysis (same questions as palmistry)
@@ -230,8 +242,6 @@ class DatabaseHelper {
     // TODO: Power of Full Engagement Value worksheet
 
     // TODO: C6 #5 Tell me about a time worksheet
-
-    // ** TODO: Story Journal (In last 24 hours write about something that moved you, interesting, funny, scary, etc.)
   }
 
   // Database helper methods:

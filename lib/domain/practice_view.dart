@@ -9,6 +9,7 @@ import 'package:practice/domain/enum/question_type.dart';
 import 'package:practice/domain/enum/skill_type.dart';
 import 'package:practice/util/utility.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:video_player/video_player.dart';
 
 class PracticePage extends StatefulWidget {
   final SkillType skillType;
@@ -28,12 +29,25 @@ class _PracticePageState extends State<PracticePage> {
   bool readOnly = false;
   var questionIdImageUrl = new Map();
 
+  VideoPlayerController _controller;
+  Future<void> _initializeVideoPlayerFuture;
+
+//  YoutubePlayerController _youtubePlayerController;
+
   @override
   void initState() {
     super.initState();
     if (widget.formId != null) {
       getQuestionAnswers(widget.formId);
     }
+  }
+
+  @override
+  void dispose() {
+    if (_controller != null) {
+      _controller.dispose();
+    }
+    super.dispose();
   }
 
   getQuestionAnswers(int formId) {
@@ -121,6 +135,9 @@ class _PracticePageState extends State<PracticePage> {
       case QuestionType.IMAGE_URL:
         return imageUrl(question);
         break;
+      case QuestionType.VIDEO_URL:
+        return videoUrl(question);
+        break;
     }
   }
 
@@ -137,7 +154,181 @@ class _PracticePageState extends State<PracticePage> {
     );
   }
 
+  videoUrl(question) {
+    var pasteIconWidget = getPasteIconWidget(question, readOnly);
+    var videoWidget = getVideoWidget(question);
+    return getUrlWidget(question, pasteIconWidget, videoWidget);
+  }
+
   imageUrl(question) {
+    var pasteIconWidget = getPasteIconWidget(question, readOnly);
+    var imageWidget = getImageWidget(question);
+    return getUrlWidget(question, pasteIconWidget, imageWidget);
+  }
+
+  getUrlWidget(question, suffixIcon, contentWidget) {
+    return getOuterStyle(
+        question,
+        Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    readOnly: true,
+                    decoration: new InputDecoration(
+                        hintText: serverQuestionAnswers[question.id],
+                        suffixIcon: suffixIcon),
+                    onChanged: (text) {
+                      questionAnswers[question.id] = text;
+                    },
+                  ),
+                ),
+              ],
+            ),
+            contentWidget,
+          ],
+        ));
+  }
+
+  getVideoWidget(question) {
+    if (questionIdImageUrl[question.id] == null) {
+      return SizedBox.shrink();
+    } else {
+      String videoUrl = questionIdImageUrl[question.id];
+//      if (videoUrl.contains('youtube.com')) {
+//        return getYoutubeVideoPlayer(videoUrl);
+//      } else {
+      return getVideoPlayer(videoUrl);
+//      }
+    }
+  }
+
+  getYoutubeVideoPlayer(String videoUrl) {
+    /*_youtubePlayerController = YoutubePlayerController(
+      initialVideoId: 'iLnmTe5Q2Qw',
+      flags: YoutubePlayerFlags(
+        mute: true,
+        autoPlay: false,
+        forceHideAnnotation: true,
+      ),
+    );
+
+    return YoutubePlayer(
+      controller: _youtubePlayerController,
+      showVideoProgressIndicator: true,
+      progressIndicatorColor: Colors.blueAccent,
+      onReady: () {},
+    );*/
+  }
+
+  getVideoPlayer(String videoUrl) {
+    _controller = VideoPlayerController.network(videoUrl);
+    _initializeVideoPlayerFuture = _controller.initialize();
+    return Column(
+      children: <Widget>[
+        FutureBuilder(
+          future: _initializeVideoPlayerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+        Row(
+          children: <Widget>[
+            Flexible(
+              flex: 1,
+              child: FlatButton(
+                color: Colors.amber,
+                textColor: Colors.white,
+                splashColor: Colors.amberAccent,
+                onPressed: () {
+                  if (!_controller.value.isPlaying) {
+                    _controller.play();
+                  }
+                },
+                child: Icon(Icons.play_arrow),
+              ),
+            ),
+            Container(
+              width: 10.0,
+            ),
+            Flexible(
+              flex: 1,
+              child: FlatButton(
+                color: Colors.amber,
+                textColor: Colors.white,
+                splashColor: Colors.amberAccent,
+                onPressed: () {
+                  if (_controller.value.isPlaying) {
+                    _controller.pause();
+                  }
+                },
+                child: Icon(Icons.pause),
+              ),
+            ),
+            Container(
+              width: 10.0,
+            ),
+            Flexible(
+              flex: 1,
+              child: FlatButton(
+                color: Colors.amber,
+                textColor: Colors.white,
+                splashColor: Colors.amberAccent,
+                onPressed: () {
+                  _controller.setVolume(0.0);
+                },
+                child: Icon(Icons.volume_up),
+              ),
+            ),
+            Container(
+              width: 10.0,
+            ),
+            Flexible(
+              flex: 1,
+              child: FlatButton(
+                color: Colors.amber,
+                textColor: Colors.white,
+                splashColor: Colors.amberAccent,
+                onPressed: () {
+                  _controller.setVolume(1.0);
+                },
+                child: Icon(Icons.volume_off),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  getImageWidget(question) {
+    return questionIdImageUrl[question.id] == null
+        ? SizedBox.shrink()
+        : Stack(
+            children: [
+              Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: CircularProgressIndicator(),
+              )),
+              Center(
+                child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage,
+                    image: questionIdImageUrl[question.id]),
+              )
+            ],
+          );
+  }
+
+  getPasteIconWidget(question, bool isRead) {
     var pasteIconWidget;
     if (readOnly) {
       questionIdImageUrl[question.id] = serverQuestionAnswers[question.id];
@@ -156,46 +347,7 @@ class _PracticePageState extends State<PracticePage> {
         },
       );
     }
-
-    var imageWidget = questionIdImageUrl[question.id] == null
-        ? SizedBox.shrink()
-        : Stack(
-            children: [
-              Center(
-                  child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CircularProgressIndicator(),
-              )),
-              Center(
-                child: FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    image: questionIdImageUrl[question.id]),
-              )
-            ],
-          );
-
-    return getOuterStyle(
-        question,
-        Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    readOnly: true,
-                    decoration: new InputDecoration(
-                        hintText: serverQuestionAnswers[question.id],
-                        suffixIcon: pasteIconWidget),
-                    onChanged: (text) {
-                      questionAnswers[question.id] = text;
-                    },
-                  ),
-                ),
-              ],
-            ),
-            imageWidget,
-          ],
-        ));
+    return pasteIconWidget;
   }
 
   answerText(question) {

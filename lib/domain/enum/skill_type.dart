@@ -13,6 +13,7 @@ enum SkillType {
   Face_Reading,
   Palmistry,
   Handwriting_Analysis,
+  Cold_Read_Video,
 }
 
 String getSkillTypeDisplayValue(SkillType skillType) {
@@ -43,5 +44,7 @@ String getSkillTypeDisplayValue(SkillType skillType) {
       return "Story Journal";
     case SkillType.Handwriting_Analysis:
       return "Handwriting Analysis";
+    case SkillType.Cold_Read_Video:
+      return "Cold Read - Video";
   }
 }
