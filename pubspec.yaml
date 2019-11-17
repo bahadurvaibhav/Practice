@@ -20,6 +20,9 @@ dependencies:
   transparent_image: ^1.0.0
   video_player: ^0.10.2+5
 
+module:
+  androidX: true
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
