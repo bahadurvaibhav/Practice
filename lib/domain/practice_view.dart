@@ -10,6 +10,7 @@ import 'package:practice/domain/enum/skill_type.dart';
 import 'package:practice/util/utility.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:video_player/video_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class PracticePage extends StatefulWidget {
   final SkillType skillType;
@@ -32,20 +33,55 @@ class _PracticePageState extends State<PracticePage> {
   VideoPlayerController _controller;
   Future<void> _initializeVideoPlayerFuture;
 
-//  YoutubePlayerController _youtubePlayerController;
+  YoutubePlayerController _youtubePlayerController;
+  YoutubeMetaData _videoMetaData;
+  bool _isPlayerReady = false;
 
   @override
   void initState() {
+    _youtubePlayerController = YoutubePlayerController(
+      initialVideoId: 'WK8qRNSmhEU',
+      flags: YoutubePlayerFlags(
+        mute: true,
+        autoPlay: false,
+        forceHideAnnotation: true,
+      ),
+    )..addListener(listener);
     super.initState();
+    _videoMetaData = YoutubeMetaData();
     if (widget.formId != null) {
       getQuestionAnswers(widget.formId);
     }
+  }
+
+  void listener() {
+    if (_isPlayerReady &&
+        mounted &&
+        !_youtubePlayerController.value.isFullScreen) {
+      setState(() {
+        _videoMetaData = _youtubePlayerController.metadata;
+      });
+    }
+  }
+
+  @override
+  void deactivate() {
+    if (_controller != null) {
+      _controller.pause();
+    }
+    if (_youtubePlayerController != null) {
+      _youtubePlayerController.pause();
+    }
+    super.deactivate();
   }
 
   @override
   void dispose() {
     if (_controller != null) {
       _controller.dispose();
+    }
+    if (_youtubePlayerController != null) {
+      _youtubePlayerController.dispose();
     }
     super.dispose();
   }
@@ -196,30 +232,83 @@ class _PracticePageState extends State<PracticePage> {
       return SizedBox.shrink();
     } else {
       String videoUrl = questionIdImageUrl[question.id];
-//      if (videoUrl.contains('youtube.com')) {
-//        return getYoutubeVideoPlayer(videoUrl);
-//      } else {
-      return getVideoPlayer(videoUrl);
-//      }
+      if (videoUrl.contains('youtube.com') || videoUrl.contains('youtu.be')) {
+        return getYoutubeVideoPlayer(videoUrl);
+      } else {
+        return getVideoPlayer(videoUrl);
+      }
     }
   }
 
   getYoutubeVideoPlayer(String videoUrl) {
-    /*_youtubePlayerController = YoutubePlayerController(
-      initialVideoId: 'iLnmTe5Q2Qw',
-      flags: YoutubePlayerFlags(
-        mute: true,
-        autoPlay: false,
-        forceHideAnnotation: true,
-      ),
+    String videoId = YoutubePlayer.convertUrlToId(videoUrl);
+    return Column(
+      children: <Widget>[
+        YoutubePlayer(
+          controller: _youtubePlayerController,
+          showVideoProgressIndicator: true,
+          progressIndicatorColor: Colors.blueAccent,
+          onReady: () {
+            print('is ready');
+            _isPlayerReady = true;
+            _youtubePlayerController.load(videoId);
+          },
+          topActions: <Widget>[
+            SizedBox(width: 8.0),
+            Expanded(
+              child: Text(
+                _videoMetaData.title,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+          ],
+          bottomActions: [
+            CurrentPosition(),
+            SizedBox(width: 10.0),
+            ProgressBar(isExpanded: true),
+            SizedBox(width: 10.0),
+            RemainingDuration(),
+            FullScreenButton(),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Flexible(
+              flex: 1,
+              child: FlatButton(
+                color: Colors.amber,
+                textColor: Colors.white,
+                splashColor: Colors.amberAccent,
+                onPressed: () {
+                  _youtubePlayerController.mute();
+                },
+                child: Icon(Icons.volume_off),
+              ),
+            ),
+            Container(
+              width: 10.0,
+            ),
+            Flexible(
+              flex: 1,
+              child: FlatButton(
+                color: Colors.amber,
+                textColor: Colors.white,
+                splashColor: Colors.amberAccent,
+                onPressed: () {
+                  _youtubePlayerController.unMute();
+                },
+                child: Icon(Icons.volume_up),
+              ),
+            ),
+          ],
+        )
+      ],
     );
-
-    return YoutubePlayer(
-      controller: _youtubePlayerController,
-      showVideoProgressIndicator: true,
-      progressIndicatorColor: Colors.blueAccent,
-      onReady: () {},
-    );*/
   }
 
   getVideoPlayer(String videoUrl) {
