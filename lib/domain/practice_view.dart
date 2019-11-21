@@ -374,7 +374,7 @@ class _PracticePageState extends State<PracticePage> {
                 textColor: Colors.white,
                 splashColor: Colors.amberAccent,
                 onPressed: () {
-                  _controller.setVolume(0.0);
+                  _controller.setVolume(1.0);
                 },
                 child: Icon(Icons.volume_up),
               ),
@@ -389,7 +389,7 @@ class _PracticePageState extends State<PracticePage> {
                 textColor: Colors.white,
                 splashColor: Colors.amberAccent,
                 onPressed: () {
-                  _controller.setVolume(1.0);
+                  _controller.setVolume(0.0);
                 },
                 child: Icon(Icons.volume_off),
               ),
