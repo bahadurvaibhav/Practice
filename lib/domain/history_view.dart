@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:practice/database/database_helper.dart';
 import 'package:practice/database/form.dart';
@@ -11,9 +13,14 @@ GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 class HomePage extends StatelessWidget {
   final DatabaseHelper helper = DatabaseHelper.instance;
 
-  void downloadData(BuildContext context, scaffoldKey) {
+  void downloadData(BuildContext context, scaffoldKey) async {
     print('Downloading data');
-    getCsv(helper, context, scaffoldKey, this.callbackRefreshList);
+    downloadCsv(helper, context, scaffoldKey, this.callbackRefreshList);
+  }
+
+  void shareData(BuildContext context, scaffoldKey) async {
+    print('Sharing data');
+    shareCsv(helper, context, scaffoldKey, this.callbackRefreshList);
   }
 
   void selectPractice(context) {
@@ -32,17 +39,24 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar(
-        title: Text("History"),
-        actions: <Widget>[
-          IconButton(
+    var downloadIcon = Platform.isAndroid
+        ? IconButton(
             icon: Icon(Icons.file_download),
             color: Colors.white,
             onPressed: () => downloadData(context, scaffoldKey),
           )
-        ],
+        : SizedBox.shrink();
+    var shareIcon = IconButton(
+      icon: Icon(Icons.share),
+      color: Colors.white,
+      onPressed: () => shareData(context, scaffoldKey),
+    );
+
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        title: Text("History"),
+        actions: <Widget>[downloadIcon, shareIcon],
       ),
       body: History(key: globalKey),
       floatingActionButton: FloatingActionButton(

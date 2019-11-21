@@ -241,7 +241,7 @@ class _PracticePageState extends State<PracticePage> {
   }
 
   getYoutubeVideoPlayer(String videoUrl) {
-    // TODO: If user enters another URL on top, load that one
+    // TODO: If user enters another URL on top of already entered one, load that one
 
     String videoId = YoutubePlayer.convertUrlToId(videoUrl);
     return Column(
