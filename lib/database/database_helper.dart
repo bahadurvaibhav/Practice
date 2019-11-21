@@ -220,12 +220,18 @@ class DatabaseHelper {
 
     // TODO: Handwriting analysis (same questions as palmistry)
 
-    // TODO: Record an audio of you telling a 1 minute story. Record same story in flat, monotone. Listen to it. Comment on the non-verbals
+    // TODO: Record an audio of you telling a 1 minute story.
+    // Record same story in flat, monotone. Listen to it. Comment on the non-verbals
     // Record audio as sports commentator. Record audio as journalist
+    // Record in wild voice
+    // Pull out your phone and play all three of the recordings you created from the practice exercises in this chapter. Compare your “normal” recording with the subsequent recordings. What did you notice? Did the wild version sound as wild as you felt it was when you recorded it? Was the monotone version painful to listen to? Did you hear any poor habits like mumbling? Is your pitch too high? Do you lose energy at the end of your comments?
+    // Let’s do one more recording. This time tell the same childhood story or choose another story. Remember, it’s important to tell a story for this exercise because during the process of recalling events, you may notice some poor conversation habits creep in. During this recording, see if you can improve upon your “normal” vocal habits and create something even more interesting. Then listen to your new recording, how did you do?
+
+    // ** TODO: Find a YouTube clip of a popular talk show host or news reporter. Watch them four or five times. After repeatedly watching the same clip, it will become easier to listen to their vocal mannerisms because you won’t be distracted by the content of their message anymore. What did you notice?
 
     // TODO: Record a video of yourself telling a 1 min story. Comment on the non-verbals
-
-    // ** TODO: Watch a youtube video. Mute audio. Comment on the non-verbals. Guess what they are conveying
+    // Record a video of yourself telling a story. Any story will do. Then record the same story again but deliberately add more movement, energy, facial expressions, and gestures. Go out of your comfort zone!
+    // Watch both versions and compare the new behaviors with your existing behaviors. What did you notice? Is one more entertaining than the other? Does the more demonstrative version look as silly as it felt while you were recording it?
 
     // TODO: TAPP Exercise. TAPP Topics. Pick a TAPP topic. Share an interesting fact about it
     // THINGS: Technology, Books, Clothes, Cars, Movies, TV Shows, Food, Drink, and Weather
@@ -242,6 +248,26 @@ class DatabaseHelper {
     // TODO: Power of Full Engagement Value worksheet
 
     // TODO: C6 #5 Tell me about a time worksheet
+
+    // TODO: Remember the "Writing Funny .." stuff book. Get the techniques from there and put them as questions here
+
+    // TODO: 1: Write openers (Cocky n Funny, Situational, etc.) (follow Style's guidline - time constraint, root your opener, etc.), Write negs, 2: Write Roleplay, 3: Write Push and Pull
+
+    // TODO: 1. Exaggerate something more than you normally would. 2.Try labeling something. 3.Use a superlative. 4.Play with a cliché.
+    // TODO: 1: Initiate conversation with a feeler (you, environment, them, problem, time) with a friend/stranger; 2: Write a story you would talk about with a friend. 3a. Now transition it to another story, using something for above story
+    // TODO: C10 #1 (Yes, and). Choose topic. Start talking about and do "yes, and" ... continue with another topic.
+    // TODO: Pick a TAPP topic, and see if you can offer a comment from each of the seven FOOFAAE categories. Try it in live conversation also!
+
+    // *** TODO: Creating Stages for what you are learning. e.g. TMI has 10 stages. Style's PUA has 4 stages and each stage has further 4 sub-stages. Multi-orgasmic has stages. Convict Conditioning has 10 stages.
+    // Define "skill" on app
+    // Write down your plan for next 6 months, 1 year, 3 yrs, 5 yrs, 10 yrs.
+    // Plan hobbies/skills for next month, 6 months, 1 year, and so on ...
+    // Within each hobby, assign practice "techniques"
+    // Assign practice "techniques" to a stage of a hobby
+
+    // TODO: Act your emotions (fear, anger, happiness, greed, guilt, etc.). Act the out facially. Attach video.
+
+    // *** TODO: 1: Export/Share excel in iOS. 2: In case of one of the video players, click on more sound mutes, and clicking on mute icon gives sound.
   }
 
   // Database helper methods:
