@@ -24,7 +24,7 @@ dependencies:
   flutter_launcher_icons: ^0.7.4
 
 flutter_icons:
-  image_path: "images/blogicon2.png"
+  image_path: "images/icon_square.png"
   android: true
   ios: true
 
