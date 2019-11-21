@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:csv/csv.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -10,12 +12,17 @@ import 'package:practice/domain/enum/skill_type.dart';
 import 'package:practice/util/utility.dart';
 
 Future<dynamic> shareCsv(DatabaseHelper helper, BuildContext context,
-    scaffoldKey, callbackRefreshList) async {}
+    scaffoldKey, callbackRefreshList) async {
+  List<List<dynamic>> rows = await getRows(helper, scaffoldKey);
+  if (rows.length != 0) {
+    await shareCsv2(rows);
+    showDeleteAlert(context, callbackRefreshList);
+  }
+}
 
 Future<dynamic> downloadCsv(DatabaseHelper helper, BuildContext context,
     scaffoldKey, callbackRefreshList) async {
   List<List<dynamic>> rows = await getRows(helper, scaffoldKey);
-  print('awaiting rows length ${rows.length}');
   if (rows.length != 0) {
     await checkPermissionAndDownloadCsv(rows, context, scaffoldKey);
     showDeleteAlert(context, callbackRefreshList);
@@ -50,14 +57,11 @@ getRows(DatabaseHelper helper, scaffoldKey) async {
   });
 
   List<List<dynamic>> rows = List<List<dynamic>>();
-  print('rows length ${rows.length}');
   for (final skillType in SkillType.values) {
     List<List<dynamic>> skillRows =
         await getRowsForSkill(helper, skillType, skillTypeQuestionAnswersMap);
-    print('skill rows length ${skillRows.length}');
     rows.addAll(skillRows);
   }
-  print('rows length ${rows.length}');
   return rows;
 }
 
@@ -134,12 +138,17 @@ class DeleteDataAlert extends StatelessWidget {
   }
 }
 
-getCsv(List<List<dynamic>> rows) async {
+shareCsv2(List<List<dynamic>> rows) async {
   String dir = (await getApplicationDocumentsDirectory()).path;
   String date = getDateTimeNow2();
-  File file = new File("$dir/practice_backup_$date.csv");
+  String title = "practice_backup";
+  String fileName = "${title}_$date.csv";
+  String path = "$dir/$fileName";
+  File file = new File(path);
   String csv = getCsvString(rows);
   await file.writeAsString(csv);
+  Uint8List bytes = await file.readAsBytes();
+  await Share.file(title, fileName, bytes, 'text/csv');
 }
 
 checkPermissionAndDownloadCsv(
@@ -152,11 +161,8 @@ checkPermissionAndDownloadCsv(
     String dir = (await getExternalStorageDirectory()).path;
     var date = getDateTimeNow2();
     var filePath = "$dir/practice_backup_$date.csv";
-    print('file path: $filePath');
     File f = new File(filePath);
-    print('creating csv rows length ${rows.length}');
     String csv = getCsvString(rows);
-    print('csv string \n$csv');
     f.writeAsString(csv);
     scaffoldKey.currentState.showSnackBar(SnackBar(
       content: Text('Backup saved in internal storage'),
